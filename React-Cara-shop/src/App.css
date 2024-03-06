@@ -1,0 +1,224 @@
+/* CARD */
+#card {
+  padding: 0.8rem;
+  border: 1px solid #cce7d0;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.02);
+  margin: 15px 0;
+  transition: 0.3s ease;
+}
+#card:hover {
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
+}
+#card .fa-star {
+  color: #efbb2d;
+  font-weight: 0.8rem;
+  margin-left: 0.3rem;
+}
+#card .des {
+  padding: 1rem 0;
+}
+#card .brand {
+  color: #606063;
+  font-size: 0.8rem;
+}
+#card .title {
+  padding-top: 0.5rem;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+#card .footer {
+  padding-top: 0.5rem;
+}
+#card .price {
+  font-weight: 700;
+  color: #088178;
+  margin-bottom: 0;
+}
+#card .cart {
+  background-color: #e8f6ea;
+  color: #088178;
+  border: 1px solid #e7d1cc;
+  padding: 10px 12px;
+  border-radius: 100%;
+}
+
+#featured #card:hover,
+#wishlist #card:hover {
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+#wishlist #card .cart {
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+#wishlist #card .cart:hover {
+  box-shadow:0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1000px) {
+  .section-p1 {
+    padding: 2rem;
+  }
+}
+@media (max-width: 679px) {
+  .section-p1 {
+    padding: 2rem 1rem;
+  }
+}
+
+/* END GLOBAL STYLE */
+
+/* ============ NAVBAR ============ */
+
+#navbar {
+  background-color: #e3e6f3 !important;
+  /* box-shadow: 0 15px 5px 5px rgba(0, 0, 0, 0.06); */
+  padding: 1rem 4rem;
+}
+
+#navbar .nav-item {
+  padding: 0 1.3rem;
+}
+
+#navbar .nav-link {
+  font-weight: 700;
+  color: #1a1a1a;
+  text-transform: capitalize;
+  transition: 0.5s;
+}
+#navbar .nav-link.active {
+  color: #088178;
+}
+
+@media (max-width: 1000px) {
+  #navbar {
+    padding: 1rem 2rem;
+  }
+
+  #navbar .nav-item {
+    padding: 0 0.7rem;
+  }
+
+  #navbar .nav-link {
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 679px) {
+  #navbar {
+    padding: 1.3rem 1rem 0.5rem;
+  }
+}
+
+/* 
+#navbar .nav-link.active::after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background-color: #088178;
+  position: absolute;
+  bottom: -4px;
+  left: 20px;
+  transition: .5s;
+} */
+
+/* END NAVBAR */
+
+/* ============ LANDING ============ */
+
+#landing {
+  background-image: url('./Assets/img/hero4.png');
+  height: 90vh;
+  background-position: top 25% right 0;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#landing h4 {
+  padding-bottom: 15px;
+  font-weight: 700;
+}
+
+#landing h1 {
+  color: #088178;
+  font-weight: 700;
+}
+
+#landing button {
+  background-image: url('./Assets/img/button.png');
+  background-color: transparent;
+  border: 0;
+  color: #088178;
+  padding: 14px 80px 14px 65px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* END LANDING */
+
+/* ============ SHOP ============ */
+
+#shop {
+  background: rgb(250, 250, 250);
+  min-height: 100vh;
+}
+
+#shop h1 {
+  position: absolute;
+  font-size: 4rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#shop .banner {
+  position: relative;
+  text-align: center;
+  max-width: 100%;
+  height: 16em;
+  background: url('./Assets/kenny-eliason-9m2RZvHS_cU-unsplash.jpg') no-repeat;
+  background-position: bottom;
+  background-size: cover;
+  overflow: hidden;
+}
+
+#shop .banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* END SHOP */
+
+/* ============ CATEGORIES ============ */
+#categories {
+  background: #fff;
+  padding: 1.1rem;
+  border-radius: 0.8rem;
+}
+
+#categories .listCat {
+  text-decoration: none;
+  color: #1a1a1a;
+}
+
+#categories .listCat h4 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+/* END CATEGORIES */
+
+/* ============ SEARCH ============ */
+
+/* END SEARCH */
