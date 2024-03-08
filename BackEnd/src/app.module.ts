@@ -11,16 +11,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { CategoryModule } from './Endpoints/category/category.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './Endpoints/user/roles.gurd';
-// import { CorsModule } from '@nestjs/axios';
-// import { CorsModule } from '@nestjs/platform-express';
 
+//
 @Module({
   imports: [
     ProductsModule,
     OrdersModule,
     UserModule,
     CategoryModule,
-    // CorsModule,
     MongooseModule.forRoot(
       'mongodb+srv://hosamabdelaty25:0115060708090Mm@cluster0.2c6xoym.mongodb.net/E-Commerce',
     ),

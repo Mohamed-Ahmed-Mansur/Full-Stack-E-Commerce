@@ -7,6 +7,9 @@ import { InjectModel } from '@nestjs/mongoose';
 export class OrdersService {
   constructor(@InjectModel('orders') private ordersModel) {}
   async create(createOrderDto: CreateOrderDto) {
+    let allOrders = await this.ordersModel.find({});
+    let lastOrderID = allOrders[allOrders.length - 1]?.orderID || 0;
+    createOrderDto.orderID = lastOrderID + 1;
     let newOrder = new this.ordersModel(createOrderDto);
     await newOrder.save();
     return { message: 'Added Successfully', data: newOrder };

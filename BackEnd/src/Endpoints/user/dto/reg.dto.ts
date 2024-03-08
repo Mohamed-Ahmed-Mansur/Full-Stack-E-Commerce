@@ -2,6 +2,7 @@ import {
   IsArray,
   IsBoolean,
   IsEmail,
+  IsEmpty,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -18,9 +19,8 @@ export class regDto {
   public name: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  @Min(10)
-  public age: number;
+  @IsString()
+  public address: string;
 
   @IsNotEmpty()
   @IsString()
@@ -32,33 +32,31 @@ export class regDto {
   public password: string;
 
   @IsNotEmpty()
-  @IsString()
-  @Length(4, 6)
-  public gender: string;
-
-  @IsNotEmpty()
   @IsNumber()
   public phone: Number;
-
-  @IsBoolean()
+  @IsNotEmpty()
   public isAdmin: boolean;
-
+  @IsNotEmpty()
   @IsBoolean()
   public isSeller: boolean;
 
   @IsBoolean()
+  @IsNotEmpty()
   public isUser: boolean;
 
   @IsArray()
+  @IsNotEmpty()
   public wishlist: [];
 
   @IsArray()
+  @IsNotEmpty()
   public cart: [];
 
   @IsArray()
-  public checkout: [];
-
   @IsNotEmpty()
-  @IsNumber()
-  public userId: number;
+  public checkout: [];
+  @IsEmpty()
+  public userID?: number;
+  @IsEmpty()
+  public flag?: boolean;
 }

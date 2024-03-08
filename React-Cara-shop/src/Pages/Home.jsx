@@ -10,15 +10,31 @@ import ImgBanner from '../Components/Home/imgBanner';
 
 export default function Home() {
   return (
-    <div id="home">
-      <Navbar></Navbar>
-      <Landing></Landing>
-      <Featured></Featured>
-      <NewArrival></NewArrival>
-      <ImgBanner></ImgBanner>
-      <ImgBanner2></ImgBanner2>
-      <Newsletter></Newsletter>
-      <Footer></Footer>
-    </div>
+    <>
+      <nav style={{ position: "sticky" }}>
+        <Navbar></Navbar>
+      </nav>
+      <section>
+        <Landing></Landing>
+      </section>
+      <main>
+        <section>
+          <Featured></Featured>
+        </section>
+        <section>
+          <NewArrival></NewArrival>
+        </section>
+        <section>
+          <ImgBanner></ImgBanner>
+          <ImgBanner2></ImgBanner2>
+        </section>
+        <section>
+          <Newsletter></Newsletter>
+        </section>
+      </main>
+      <footer>
+        <Footer></Footer>
+      </footer>
+    </>
   );
 }

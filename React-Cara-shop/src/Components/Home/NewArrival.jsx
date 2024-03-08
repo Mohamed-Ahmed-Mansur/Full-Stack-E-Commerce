@@ -1,62 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../Card';
 
 export default function NewArrival() {
-  const products = [
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '500',
-      brand: 'adidas',
-      rating: 1,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '900',
-      brand: 'Nike',
-      rating: 2,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '400',
-      brand: 'adidas',
-      rating: 4,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '200',
-      brand: 'adidas',
-      rating: 3,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '1400',
-      brand: 'Puma',
-      rating: 5,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '200',
-      brand: 'Nike',
-      rating: 2,
-    },
-  ];
+
+  let [data1, setdata1] = useState([]);
+  
+  async function getData() {
+    try {
+      await fetch("http://localhost:3001/products").then(res => res.json()).then(data => setdata1(data));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+    useEffect(() => {
+      getData();
+    },[]);
 
   return (
-    <div className="section-p1">
+    <section className="section-p1">
       <div className="row text-center mb-5">
         <h2>New Arrivals</h2>
         <p>Summer Collection New Modern Design</p>
       </div>
 
-      <div className="row g-5">
-        {products.map((prd, i) => {
+      <div className="row g-5 ">
+        {data1.map((prd, i) => {
           return (
-            <div key={i} className="col-lg-3 col-md-4 col-sm-6 mt-0">
+            <div key={i} className="col-lg-3 col-md-4 col-sm-6 mt-0 mb-4 ">
               <Card product={prd}></Card>
             </div>
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }

@@ -1,14 +1,16 @@
 import mongoose from 'mongoose';
 
 export let UserSchema = new mongoose.Schema({
-  userId: Number,
+  userID: Number,
+  phone: Number,
   name: String,
-  age: Number,
+  address: String,
   email: String,
   password: String,
   isAdmin: Boolean,
   isSeller: Boolean,
   isUser: Boolean,
+  flag: Boolean,
   wishlist: [],
   checkout: [],
   cart: [],

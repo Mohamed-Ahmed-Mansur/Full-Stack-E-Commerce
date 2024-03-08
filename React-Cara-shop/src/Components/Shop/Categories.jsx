@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import Search from './Search';
+// import Search from './Search';
 
 export default function Categories() {
   const categoriesArr = ['cat1', 'cat2', 'cat3'];

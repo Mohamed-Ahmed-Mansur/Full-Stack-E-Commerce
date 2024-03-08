@@ -1,59 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../Card';
 import '@splidejs/splide/dist/css/splide.min.css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
 
 export default function Featured() {
-  const products = [
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '500',
-      brand: 'adidas',
-      rating: 1,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '900',
-      brand: 'Nike',
-      rating: 2,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '400',
-      brand: 'adidas',
-      rating: 4,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '200',
-      brand: 'adidas',
-      rating: 3,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '1400',
-      brand: 'Puma',
-      rating: 5,
-    },
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '200',
-      brand: 'Nike',
-      rating: 2,
-    },
-  ];
 
-  async function getData() {
-    const data = await fetch("http://localhost:3001/products").then(res => res.json()).then(data => data)
-    console.log(data)
+let proid = [];
+let [data1, setdata1] = useState([]);
+
+async function getData() {
+  try {
+    const data = await fetch("http://localhost:3001/orders").then(res => res.json());
+    data.reverse();
+
+    const productIds = data.flatMap(prd => prd.productID);
+    proid = [...productIds];
+    
+    // Used await Promise.all(...) to wait for all fetch requests to complete before updating the state.
+    const productDataArray = await Promise.all(proid.map(async (p) => {
+      const response = await fetch(`http://localhost:3001/products/${p}`);
+      const productData = await response.json();
+      return productData;
+    }));
+
+    setdata1(productDataArray);
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
-
+}
   useEffect(() => {
     getData();
-    // const data = fetch("http://localhost:3001/products").then(res => res.json()).then(data => data)
-    // console.log(data)
-  });
+  }, []);
 
   return (
     <div id="featured" className='my-5'>
@@ -84,13 +62,14 @@ export default function Featured() {
           }}
           extensions={{ AutoScroll }}
         >
-          {products.map((prd) => {
+          
+          {data1.map((prd) => {
             return (
-              
-                <SplideSlide>
-                  <Card product={prd}></Card>
-                </SplideSlide>
-             
+            
+              <SplideSlide key={prd.id} >
+                <Card product={prd}></Card>
+              </SplideSlide>
+
             );
           })}
         </Splide>
