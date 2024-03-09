@@ -18,7 +18,7 @@ export let ProductsSchema = new mongoose.Schema({
       Comment: String,
       userEmail: String,
       userID: Number,
-      Date: Date,
+      ratings: Number,
     },
   ],
   substitutes: [{}],

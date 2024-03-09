@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { CheckOutService } from './check-out.service';
 import { CheckOutController } from './check-out.controller';

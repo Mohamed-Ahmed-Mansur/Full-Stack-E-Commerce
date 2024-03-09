@@ -15,9 +15,6 @@ import {
 } from 'class-validator';
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {
-  @IsNumber()
-  @IsPositive()
-  @IsEmpty()
   public id?: number;
   @IsNumber()
   @IsNotEmpty()
@@ -60,6 +57,7 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
   substitutes: {}[];
   @IsArray()
   public comments: {
+    ratings: number;
     userName: string;
     Comment: string;
     userEmail: string;

@@ -54,6 +54,7 @@ export class CreateProductDto {
   substitutes: {}[];
   @IsArray()
   public comments: {
+    ratings: number;
     userName: string;
     Comment: string;
     userEmail: string;

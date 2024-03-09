@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { LoginDto } from './dto/log.dto';
@@ -8,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import emailjs from '@emailjs/nodejs';
 import { verifycationCode } from './dto/verifycationCode.dto';
+import { log } from 'console';
 
 @Injectable()
 export class UserService {
@@ -59,7 +59,7 @@ export class UserService {
       let myJWT = await this.jwtService.sign({
         user: founduser,
       });
-      res.cookie('x-auth-token', myJWT);
+      res.header('x-auth-token', myJWT);
       return { message: 'Logged-In Successfully' };
     } else {
       return { message: 'Please verify your account ' };
@@ -119,7 +119,7 @@ export class UserService {
         let myJWT = await this.jwtService.sign({
           user: foundUser,
         });
-        res.cookie('x-auth-token', myJWT);
+        res.header('x-auth-token', myJWT);
         return { message: 'Account Verified', user: updateUser };
       } else {
         return { message: 'Please insert the right code' };
@@ -133,14 +133,15 @@ export class UserService {
       email: Email.email,
     });
     const confirmationCode = Math.floor(10000 + Math.random() * 90000);
-    await this.varifModel.deleteOne({ email: Email.email });
-    const templateParams = {
-      from_name: 'Cara',
-      message: `Your confirmation code is: ${confirmationCode}`,
-      to_name: foundUser.name,
-      email: foundUser.email,
-    };
+    await this.varifModel.deleteMany({ email: Email.email });
+
     if (foundUser) {
+      const templateParams = {
+        from_name: 'Cara',
+        message: `Your confirmation code is: ${confirmationCode}`,
+        to_name: foundUser.name,
+        email: foundUser.email,
+      };
       let Newvarif = new this.varifModel({
         userID: foundUser.userID,
         email: foundUser.email,
@@ -149,6 +150,8 @@ export class UserService {
       await Newvarif.save();
       await this.sendEmail(templateParams);
       return { message: 'Email Sent' };
+    } else {
+      return { message: 'Wrong Email' };
     }
   }
   async codeForForget(code: verifycationCode) {
@@ -158,7 +161,11 @@ export class UserService {
         await this.varifModel.deleteOne({ email: code.email });
 
         return { message: 'Correct Code' };
+      } else {
+        return { message: 'Wrong Code' };
       }
+    } else {
+      return { message: 'Wrong Email' };
     }
   }
   async updatePass(EmailAndpassword: { email: string; password: string }) {
@@ -179,6 +186,20 @@ export class UserService {
       return { message: 'Password Updated ', user: updateUser };
     } else {
       return { message: 'Email is wrong' };
+    }
+  }
+  async admitSeller(Email: { email: string }) {
+    let findSeller = await this.userModel.updateOne(
+      { email: Email.email },
+
+      {
+        $set: { admit: true },
+      },
+    );
+    if (findSeller) {
+      return { message: 'Seller request approved', updatedUser: findSeller };
+    } else {
+      return { message: 'Email wrong' };
     }
   }
   findAll() {

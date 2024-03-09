@@ -20,6 +20,8 @@ export class CreateOrderDto {
   @IsPositive()
   @IsNotEmpty()
   userID: number;
+  @IsNotEmpty()
+  userEmail: string;
   @IsNumber()
   @IsPositive()
   @IsNotEmpty()

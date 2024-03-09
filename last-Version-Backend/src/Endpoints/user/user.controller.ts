@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -16,6 +15,8 @@ import { LoginDto } from './dto/log.dto';
 import { regDto } from './dto/reg.dto';
 import { Response } from 'express';
 import { verifycationCode } from './dto/verifycationCode.dto';
+import { UserRoles } from './roles.decoretor';
+import { Role } from './roles.enum';
 
 @Controller('user')
 export class UserController {
@@ -40,9 +41,14 @@ export class UserController {
     return this.userService.verify(verifycationCode, res);
   }
   @UsePipes(ValidationPipe)
-  @Post('/forgetPass')
+  @Post('/forgetPassEmail')
   forgetPassEmail(@Body() Email: { email: string }) {
     return this.userService.forgetPassEmail(Email);
+  }
+  @UsePipes(ValidationPipe)
+  @Post('/admitSeller')
+  admitSeller(@Body() Email: { email: string }) {
+    return this.userService.admitSeller(Email);
   }
   @UsePipes(ValidationPipe)
   @Post('/codeForForget')
@@ -75,7 +81,7 @@ export class UserController {
   update(@Param('id') id: string, @Body() updateUserDto: regDto) {
     return this.userService.update(+id, updateUserDto);
   }
-
+  @UserRoles(Role.Admin, Role.Seller)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);

@@ -35,11 +35,15 @@ export class ProductsController {
     return this.productsService.findOne(+id);
   }
   @Get('/:category/:subCategory')
-  findByCategory(
+  findByCategoryAndSub(
     @Param('category') category: string,
     @Param('subCategory') subCategory: string,
   ) {
-    return this.productsService.findByCategory(category, subCategory);
+    return this.productsService.findByCategoryAndSub(category, subCategory);
+  }
+  @Get('findByCategory/category/:category')
+  findByCategory(@Param('category') category: string) {
+    return this.productsService.findByCategory(category);
   }
   @UserRoles(Role.Admin, Role.Seller)
   @UsePipes(ValidationPipe)

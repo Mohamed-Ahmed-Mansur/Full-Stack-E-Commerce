@@ -2,17 +2,13 @@ import React from 'react';
 import Facebook from '../Components/login/facebook';
 import Google from '../Components/login/google';
 import axios from "axios";
-import Cookies from 'universal-cookie';
 import { toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setLogin } from '../Redux/Slices/checkLogin';
-import { setUser } from '../Redux/Slices/userLogin';
 
 const Sign = () => {
-  const cookies = new Cookies();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -24,11 +20,7 @@ const Sign = () => {
     const { data: { message } } = await axios.post("http://localhost:3001/user/log", { email, password }, { withCredentials: true });
 
     if (message === "Logged-In Successfully") {
-      const JWT = cookies.get("x-auth-token");
-      const decodedJWT = jwtDecode(JWT);
       dispatch(setLogin());
-      dispatch(setUser(decodedJWT));
-      console.log(decodedJWT)
       navigate("/");
     } else if (message === "Invalid Email Or Password !!") {
       // Show error toast for invalid credentials

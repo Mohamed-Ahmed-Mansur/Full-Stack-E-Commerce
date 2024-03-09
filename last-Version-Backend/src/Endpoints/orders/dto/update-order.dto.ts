@@ -21,6 +21,8 @@ export class UpdateOrderDto extends PartialType(CreateOrderDto) {
   @IsPositive()
   @IsNotEmpty()
   userID: number;
+  @IsNotEmpty()
+  userEmail: string;
   @IsNumber()
   @IsPositive()
   @IsNotEmpty()

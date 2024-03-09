@@ -63,6 +63,7 @@ const Cart = () => {
   
   async function handlePayment() {
     const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+    localStorage.removeItem('cart');
 
     const response = await axios.post("http://localhost:3001/check-out/checkout", {
       products: products,
