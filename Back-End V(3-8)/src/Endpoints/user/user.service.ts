@@ -45,6 +45,11 @@ export class UserService {
   async log(loguser: LoginDto, res: Response) {
     let founduser = await this.found(loguser.email);
     if (!founduser) return { message: 'Invalid Email Or Password !!' };
+    if (founduser.isSeller && !founduser.admit)
+      return {
+        message:
+          "Your application is still in review and once it's verfied you will be noticed over email  ",
+      };
     if (founduser.flag) {
       let istruepass = await bcrypt.compare(
         loguser.password,
@@ -53,15 +58,11 @@ export class UserService {
       if (!istruepass) return { message: 'Invalid Email Or Password !!' };
       let myJWT = await this.jwtService.sign({
         user: founduser,
-        name: founduser.name,
-        isAdmin: founduser.isAdmin,
-        isUser: founduser.isUser,
-        isSeller: founduser.isSeller,
       });
       res.cookie('x-auth-token', myJWT);
       return { message: 'Logged-In Successfully' };
     } else {
-      return { message: 'Please verify your account' };
+      return { message: 'Please verify your account ' };
     }
   }
 
@@ -69,7 +70,7 @@ export class UserService {
     const confirmationCode = Math.floor(10000 + Math.random() * 90000);
 
     const templateParams = {
-      from_name: 'hosam',
+      from_name: 'Cara',
       message: `Your confirmation code is: ${confirmationCode}`,
       to_name: reguser.name,
       email: reguser.email,
@@ -81,7 +82,7 @@ export class UserService {
     if (foundUser)
       return {
         message:
-          'your Email is Aready exist Please enter another email or go to login ',
+          'Your email is already exist please enter another email or go to login ',
       };
     let lastuserID = allUsers[allUsers.length - 1]?.userID || 0;
 
@@ -117,14 +118,9 @@ export class UserService {
         await this.varifModel.deleteOne({ email: code.email });
         let myJWT = await this.jwtService.sign({
           user: foundUser,
-          name: foundUser.name,
-          isAdmin: foundUser.isAdmin,
-          isUser: foundUser.isUser,
-          isSeller: foundUser.isSeller,
         });
         res.cookie('x-auth-token', myJWT);
-        return { message: 'Logged-In Successfully' };
-        return { message: 'Account Verified ', user: updateUser };
+        return { message: 'Account Verified', user: updateUser };
       } else {
         return { message: 'Please insert the right code' };
       }
@@ -137,9 +133,9 @@ export class UserService {
       email: Email.email,
     });
     const confirmationCode = Math.floor(10000 + Math.random() * 90000);
-
+    await this.varifModel.deleteOne({ email: Email.email });
     const templateParams = {
-      from_name: 'hosam',
+      from_name: 'Cara',
       message: `Your confirmation code is: ${confirmationCode}`,
       to_name: foundUser.name,
       email: foundUser.email,
@@ -188,7 +184,18 @@ export class UserService {
   findAll() {
     return this.userModel.find({});
   }
-
+  admited() {
+    return this.userModel.find({
+      isSeller: true,
+      admit: true,
+    });
+  }
+  notAdmited() {
+    return this.userModel.find({
+      isSeller: true,
+      admit: false,
+    });
+  }
   findOne(id: number) {
     return this.userModel.find({ userID: id });
   }

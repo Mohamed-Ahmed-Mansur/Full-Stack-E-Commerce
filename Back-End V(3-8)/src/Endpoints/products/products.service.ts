@@ -8,7 +8,15 @@ export class ProductsService {
   constructor(@InjectModel('products') private ProductsModel) {}
 
   async create(createProductDto: CreateProductDto) {
+    let findProduct = this.ProductsModel.findOne({
+      title: createProductDto.title,
+    });
+    if (findProduct) return { message: 'Product Already Exists' };
     let newproduct = new this.ProductsModel(createProductDto);
+    let allProducts = await this.ProductsModel.find({});
+    let lastProductID = allProducts[allProducts.length - 1].id;
+    newproduct.id = lastProductID + 1;
+
     await newproduct.save();
     return { message: 'Added Successfully', data: newproduct };
   }
@@ -39,7 +47,10 @@ export class ProductsService {
     });
     return { message: 'deleted Successfully', data: remainderproduct };
   }
-  findByCategory(Category: string) {
-    return this.ProductsModel.find({ 'category.name': Category });
+  findByCategory(Category: string, subCategory: string) {
+    return this.ProductsModel.find({
+      category: Category,
+      subcategory: subCategory,
+    });
   }
 }

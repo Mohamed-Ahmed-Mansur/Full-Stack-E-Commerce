@@ -13,22 +13,11 @@ import {
   MinLength,
 } from 'class-validator';
 export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
-  @IsNotEmpty()
-  @IsNumber()
-  id: number;
+  id?: number;
   @IsNotEmpty()
   @IsString()
-  name: string;
+  category: string;
   @IsNotEmpty()
-  @IsString()
-  @MinLength(3)
-  image: string;
-  @IsNotEmpty()
-  @IsString()
-  @MinLength(3)
-  creationAt: string;
-  @IsNotEmpty()
-  @IsString()
-  @MinLength(3)
-  updatedAt: string;
+  @IsArray()
+  subCategories: string[];
 }

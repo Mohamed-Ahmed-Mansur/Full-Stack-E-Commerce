@@ -7,7 +7,7 @@ export default function NewArrival() {
   
   async function getData() {
     try {
-      await fetch("http://localhost:3001/products").then(res => res.json()).then(data => setdata1(data));
+      await fetch("http://localhost:3001/products").then(res => res.json()).then(data => setdata1(data.slice(0, 8)));
     } catch (error) {
       console.error("Error fetching data:", error);
     }

@@ -7,7 +7,16 @@ import { InjectModel } from '@nestjs/mongoose';
 export class CategoryService {
   constructor(@InjectModel('category') private categoryModel) {}
   async create(createCategoryDto: CreateCategoryDto) {
+    let findCategory = this.categoryModel.findOne({
+      category: createCategoryDto.category,
+    });
+    if (findCategory) {
+      return { message: 'Category already exsists ' };
+    }
     let newproduct = new this.categoryModel(createCategoryDto);
+    let allCategories = this.categoryModel.find({});
+    let lastCategoriID = allCategories[allCategories.length - 1];
+    newproduct.id = lastCategoriID + 1;
     await newproduct.save();
     return { message: 'Added Successfully', data: newproduct };
   }

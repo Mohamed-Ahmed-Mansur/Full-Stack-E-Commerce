@@ -32,8 +32,8 @@ export class regDto {
   public password: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  public phone: Number;
+  @IsString()
+  public phone: string;
   @IsNotEmpty()
   public isAdmin: boolean;
   @IsNotEmpty()
@@ -43,6 +43,9 @@ export class regDto {
   @IsBoolean()
   @IsNotEmpty()
   public isUser: boolean;
+  @IsBoolean()
+  @IsNotEmpty()
+  public admit: boolean;
 
   @IsArray()
   @IsNotEmpty()
@@ -55,6 +58,11 @@ export class regDto {
   @IsArray()
   @IsNotEmpty()
   public checkout: [];
+
+  @IsArray()
+  @IsNotEmpty()
+  public recent: [];
+
   @IsEmpty()
   public userID?: number;
   @IsEmpty()

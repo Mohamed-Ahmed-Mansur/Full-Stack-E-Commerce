@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 export let UserSchema = new mongoose.Schema({
   userID: Number,
-  phone: Number,
+  phone: String,
   name: String,
   address: String,
   email: String,
@@ -11,6 +11,8 @@ export let UserSchema = new mongoose.Schema({
   isSeller: Boolean,
   isUser: Boolean,
   flag: Boolean,
+  admit: Boolean,
+  recent: [],
   wishlist: [],
   checkout: [],
   cart: [],

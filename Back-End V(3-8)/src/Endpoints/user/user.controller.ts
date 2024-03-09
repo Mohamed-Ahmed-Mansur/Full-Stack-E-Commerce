@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -32,12 +33,15 @@ export class UserController {
   }
   @UsePipes(ValidationPipe)
   @Post('/verify')
-  verify(@Body() verifycationCode: verifycationCode,@Res({ passthrough: true }) res: Response) {
-    return this.userService.verify(verifycationCode,res);
+  verify(
+    @Body() verifycationCode: verifycationCode,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.userService.verify(verifycationCode, res);
   }
   @UsePipes(ValidationPipe)
   @Post('/forgetPass')
-  forgetPassEmail(@Body() Email: {email:string}) {
+  forgetPassEmail(@Body() Email: { email: string }) {
     return this.userService.forgetPassEmail(Email);
   }
   @UsePipes(ValidationPipe)
@@ -47,14 +51,21 @@ export class UserController {
   }
   @UsePipes(ValidationPipe)
   @Post('/updatePass')
-  updatePass(@Body() EmailAndpassword: {email:string ,password:string}) {
+  updatePass(@Body() EmailAndpassword: { email: string; password: string }) {
     return this.userService.updatePass(EmailAndpassword);
   }
   @Get()
   findAll() {
     return this.userService.findAll();
   }
-
+  @Get('admited')
+  admited() {
+    return this.userService.admited();
+  }
+  @Get('notAdmited')
+  notAdmited() {
+    return this.userService.notAdmited();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);

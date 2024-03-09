@@ -34,9 +34,12 @@ export class ProductsController {
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
   }
-  @Get('category/:category')
-  findByCategory(@Param('category') category: string) {
-    return this.productsService.findByCategory(category);
+  @Get('/:category/:subCategory')
+  findByCategory(
+    @Param('category') category: string,
+    @Param('subCategory') subCategory: string,
+  ) {
+    return this.productsService.findByCategory(category, subCategory);
   }
   @UserRoles(Role.Admin, Role.Seller)
   @UsePipes(ValidationPipe)

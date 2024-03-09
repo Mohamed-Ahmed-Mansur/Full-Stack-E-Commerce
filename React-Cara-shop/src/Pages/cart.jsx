@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../Components/Home/Navbar';
 import Footer from '../Components/Home/footer';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
 
 const Cart = () => {
   const [products, setProducts] = useState([]);
@@ -18,6 +20,7 @@ const Cart = () => {
       return p;
     });
     setProducts(updatedProducts);
+    localStorage.setItem('cart', JSON.stringify(updatedProducts));
   }
 
   function handleSubtract(product) {
@@ -30,6 +33,7 @@ const Cart = () => {
       return p;
     });
     setProducts(updatedProducts);
+    localStorage.setItem('cart', JSON.stringify(updatedProducts));
   }
 
   function handleRemove(id) {
@@ -56,6 +60,24 @@ const Cart = () => {
     setSubtotal(sum); 
     setTotal(sum); // Assuming total is same as subtotal for now
   }
+  
+  async function handlePayment() {
+    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
+    const response = await axios.post("http://localhost:3001/check-out/checkout", {
+      products: products,
+      subtotal: subtotal,
+      total: total
+    });
+
+    const result = stripe.redirectToCheckout({
+      sessionId: response.data.sessionId
+    });
+
+    if(result.error) {
+      console.log(result.error);
+    }
+  }
 
   useEffect(() => {
     calculateSupTotals();
@@ -64,13 +86,6 @@ const Cart = () => {
   useEffect(() => {
     setProducts(JSON.parse(localStorage.getItem('cart')) || []);
   }, []);
-
-
-  console.log('Cart component rendered');
-
-  // if (typeof products[0] === "undefined") {
-  //   return (<p>Your Cart is <b>Empty</b></p>);
-  // }
 
   return (
     <>
@@ -188,7 +203,11 @@ const Cart = () => {
                     </tr>
                   </tbody>
                 </table>
-                <button className="btn btn-primary btn-block" style={{ backgroundColor: "#088178", border: "1px solid #088178" }}>
+                <button 
+                className="btn btn-primary btn-block" 
+                style={{ backgroundColor: "#088178", border: "1px solid #088178" }}
+                onClick={handlePayment}
+                >
                   Proceed to checkout
                 </button>
               </div>

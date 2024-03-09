@@ -24,9 +24,9 @@ export class RolesGuard implements CanActivate {
 
     for (const role of requiredRoles) {
       if (
-        (role === 'seller' && data.isSeller) ||
-        (role === 'admin' && data.isAdmin) ||
-        (role === 'user' && data.isUser)
+        (role === 'seller' && data.user.isSeller) ||
+        (role === 'admin' && data.user.isAdmin) ||
+        (role === 'user' && data.user.isUser)
       ) {
         return true;
       }

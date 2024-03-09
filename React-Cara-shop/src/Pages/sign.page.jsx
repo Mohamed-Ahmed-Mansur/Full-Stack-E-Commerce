@@ -28,6 +28,7 @@ const Sign = () => {
       const decodedJWT = jwtDecode(JWT);
       dispatch(setLogin());
       dispatch(setUser(decodedJWT));
+      console.log(decodedJWT)
       navigate("/");
     } else if (message === "Invalid Email Or Password !!") {
       // Show error toast for invalid credentials

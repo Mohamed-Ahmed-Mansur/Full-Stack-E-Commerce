@@ -11,7 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { CategoryModule } from './Endpoints/category/category.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './Endpoints/user/roles.gurd';
-
+import { CheckOutModule } from './Endpoints/check-out/check-out.module';
 //
 @Module({
   imports: [
@@ -19,6 +19,7 @@ import { RolesGuard } from './Endpoints/user/roles.gurd';
     OrdersModule,
     UserModule,
     CategoryModule,
+    CheckOutModule,
     MongooseModule.forRoot(
       'mongodb+srv://hosamabdelaty25:0115060708090Mm@cluster0.2c6xoym.mongodb.net/E-Commerce',
     ),
