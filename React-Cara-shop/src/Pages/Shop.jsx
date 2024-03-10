@@ -3,73 +3,79 @@ import Navbar from '../Components/Home/Navbar';
 import Categories from '../Components/Shop/Categories';
 import Search from '../Components/Shop/Search';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Shop() {
-  const [currSub, setCurrSub] = useState(null);
+  const [currCat, setcurrCat] = useState(null);
+  const [data, setData] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  const { sub } = useParams();
+  const { category, subcategory } = useParams();
+
+
+  const fetchData = async () => {
+    try {
+      let url;
+
+      if (subcategory) {
+        url = `http://localhost:3001/products/${category}/${subcategory}`;
+      } else if (currCat) {
+        url = `http://localhost:3001/products/findByCategory/category/${currCat}`;
+      } else {
+        url = 'http://localhost:3001/products';
+      }
+      await axios.get(url).then((res) => {
+        setData(res.data);
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    await axios.get('http://localhost:3001/category').then((res) => {
+      const categoryNames = res.data.map((cat) => cat.category);
+      setCategories(categoryNames);
+    });
+  };
 
   useEffect(() => {
-    setCurrSub(sub);
-  }, [sub]);
+    setcurrCat(category);
+    fetchCategories();
+    fetchData();
+  }, [category, subcategory, currCat]);
 
-  const products = [
-    {
-      title: 'Astronut T-Shirts',
-      price: '500',
-      brand: 'adidas',
-      rating: 1,
-    },
-    {
-      title: 'shirt',
-      price: '900',
-      brand: 'Nike',
-      rating: 2,
-    },
-    {
-      title: 'trousers',
-      price: '400',
-      brand: 'adidas',
-      rating: 4,
-    },
-    {
-      title: 'hoodie',
-      price: '200',
-      brand: 'adidas',
-      rating: 3,
-    },
-    {
-      title: 'pants',
-      price: '1400',
-      brand: 'Puma',
-      rating: 5,
-    },
-    {
-      title: 'socks',
-      price: '200',
-      brand: 'Nike',
-      rating: 2,
-    },
-  ];
+  // useEffect(() => {
+  // }, [currCat, subcategory]);
 
   return (
     <>
       <Navbar></Navbar>
-      <div id="shop" className="container-fluid" style={{ padding: '2rem' }}>
-        <div className="row mt-1 mb-5">
-          <div className="col-12">
-            <div className="banner rounded-4 overflow-hidden d-flex align-items-center justify-content-center">
-              <h1>{currSub || 'Categoires'}</h1>
-            </div>
-          </div>
-        </div>
+      <div id="shop">
+        <section
+          className="container-fluid d-flex flex-column justify-content-center align-items-center text-center"
+          style={{
+            backgroundImage: "url('../Assets/img/about/banner.png')",
+            height: '30vh',
+            backgroundSize: 'cover',
+            padding: '1rem',
+            color: '#fff',
+            marginBottom: '1.3rem',
+          }}
+        >
+          <h1 className='d-block'>{currCat || '#Cara Shop'}</h1>
+          <p style={{ color: "white" }}>We wish you a happy shopping</p>
+          {subcategory ? <h4 className='d-block'>{subcategory}</h4> : ''}
+        </section>
 
-        <div className="row">
-          <div className="col-md-3">
-            <Categories></Categories>
-          </div>
-          <div className="col-md-9">
-            <Search products={products}></Search>
+        <div className="container-fluid" style={{ overflowX: 'hidden' }}>
+          <div className="row">
+            <div className="col-lg-3 col-md-4">
+              <Categories categories={categories} subcategory={subcategory}></Categories>
+            </div>
+            <div className="col-lg-9 col-md-8">
+              <Search products={data} category={currCat}></Search>
+            </div>
           </div>
         </div>
       </div>

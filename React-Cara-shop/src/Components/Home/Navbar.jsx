@@ -3,6 +3,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from "jwt-decode";
+import Swal from 'sweetalert2';
+import styled from 'styled-components';
 
 export default function Navbar() {
   const cookies = new Cookies(); 
@@ -12,29 +14,46 @@ export default function Navbar() {
     var { user } = jwtDecode(JWT);
   }
   // Retrieve cart and fav arrays from localStorage
-  const cart = JSON.parse(localStorage.getItem('cart')) || null;
-  const fav = JSON.parse(localStorage.getItem('fav')) || null;
+  const cart = user.cart.length === 0 ? null: user.cart.length;
+  const fav = user.wishlist.length === 0 ? null: user.wishlist.length;
 
-  // Function to sum the quantity values from an array of objects
-  const sumQuantity = (items = []) => {
-    if (!items) {
-      return false;
-    }
-    return items.reduce((total, item) => total + item.quantity, 0);
-  };
-
-  // Sum the quantity values in the cart array
-  const cartTotalQuantity = sumQuantity(cart);
-
-  // Sum the quantity values in the fav array
-  const favTotalQuantity = sumQuantity(fav);
   function handleLogOut() {
     cookies.remove('x-auth-token');
-    navigate("/");
+    navigate("/home");
   }
 
+  const handleSignUp = (()=> {
+    Swal.fire({
+      title: "Choose your role",
+      text: "Are you registering as a user or a seller?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "User",
+      cancelButtonText: "Seller"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Registering as User",
+          text: "Please fill in the required information to complete the registration as a user.",
+          icon: "info"
+        });
+        navigate("/signupUser");
+  
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: "Registering as Seller",
+          text: "Please fill in the required information to complete the registration as a seller.",
+          icon: "info"
+        });
+        navigate("/signupSeller");
+      }
+    });
+  })
+
   return (
-      <nav
+      <NavbarContainer
         id="navbar"
         className="navbar navbar-expand-md navbar-light bg-light sticky-top"
         style={{   boxShadow: "0 15px  5px  5px rgba(0, 0, 0, .06)"}}
@@ -145,12 +164,12 @@ export default function Navbar() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Sign in
+                  <b style={{ fontSize: "1rem" }}>S</b><b style={{ textTransform: 'lowercase', fontSize: "1rem" }}>ign in</b>
                 </span>
                 <ul className="dropdown-menu p-2 m-auto text-center">
                   <li className="btn btn-warning p-0">
-                    <NavLink className="dropdown-item" to="/signin">
-                      Sign in
+                    <NavLink className="dropdown-item fw-bold" to="/signin" style={{ textTransform: 'lowercase' }}>
+                      <b style={{ fontSize: "0.8rem" }}>S</b><b style={{ textTransform: 'lowercase', fontSize: "0.8rem" }}>ign in</b>
                     </NavLink>
                   </li>
                   <li className="mt-3 p-0 w-100">
@@ -162,6 +181,7 @@ export default function Navbar() {
                       <NavLink
                         className="dropdown-item d-inline-block p-0 w-auto fw-bold"
                         to="/signup"
+                        onClick={handleSignUp}
                       >
                         Sign up
                       </NavLink>
@@ -174,7 +194,7 @@ export default function Navbar() {
                 <span className="me-4 position-relative">
                   <i
                     className="fa-solid fa-heart"
-                    style={{ fontSize: '1.2rem' }}
+                    style={{ fontSize: '1.2rem', color: "#088178" }}
                   ></i>
                  {fav && <span
                     className="position-absolute top-0 start-100 translate-middle badge rounded-pill text-dark"
@@ -183,7 +203,7 @@ export default function Navbar() {
                       fontSize: ' 0.6rem',
                     }}
                   >
-                    {favTotalQuantity}
+                    {fav}
                   </span>}
                 </span>
               </NavLink>
@@ -192,7 +212,7 @@ export default function Navbar() {
                 <span className="me-4 position-relative">
                   <i
                     className="fa-solid fa-cart-shopping"
-                    style={{ fontSize: '1.2rem' }}
+                    style={{ fontSize: '1.2rem', color: "#088178" }}
                   ></i>
                 {cart && <span
                     className="position-absolute top-0 start-100 translate-middle badge rounded-pill text-dark"
@@ -201,13 +221,18 @@ export default function Navbar() {
                       fontSize: ' 0.6rem',
                     }}
                   >
-                    {cartTotalQuantity}
+                    {cart}
                   </span>}
                 </span>
               </NavLink></>}
             </div>
           </div>
         </div>
-      </nav>
+      </NavbarContainer>
   );
 }
+
+const NavbarContainer = styled.nav`
+  background: linear-gradient(to right, rgba(139,169,192,255), rgba(225,229,231,255));
+  box-shadow: 0 15px 5px 5px rgba(0, 0, 0, .06);
+`;

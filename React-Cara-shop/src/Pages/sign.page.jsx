@@ -1,138 +1,180 @@
-import React from 'react';
-import Facebook from '../Components/login/facebook';
-import Google from '../Components/login/google';
+import React, { useState } from "react";
+import {
+  MDBBtn,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBInput,
+} from "mdb-react-ui-kit";
 import axios from "axios";
-import { toast } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
-import { setLogin } from '../Redux/Slices/checkLogin';
+import { toast } from "react-toastify";
+import { NavLink, useNavigate } from "react-router-dom";
+import Facebook from "../Components/login/facebook";
+import Google from "../Components/login/google";
 
-const Sign = () => {
+function SignIn() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+  const { email, password } = formData;
+
+  let [flag, setFlag] = useState(false);
+  let [sellerFlag, setSellerFlag] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const email = e.target.children[0].children[0].value;
-    const password = e.target.children[1].children[0].value;
-    const { data: { message } } = await axios.post("http://localhost:3001/user/log", { email, password }, { withCredentials: true });
+    if (!email.trim()) {
+      setErrors({ ...errors, email: "Please enter your email." });
+      return;
+    }
+    if (!password.trim()) {
+      setErrors({ ...errors, password: "Please enter your password." });
+      return;
+    }
 
-    if (message === "Logged-In Successfully") {
-      dispatch(setLogin());
-      navigate("/");
-    } else if (message === "Invalid Email Or Password !!") {
-      // Show error toast for invalid credentials
-      toast.error(message);
-    } else if (message === "Please verify your account") {
-      // Show warning toast for unverified account
-      toast.warning(message);
+    try {
+      const {
+        data: { message },
+      } = await axios.post(
+        "http://localhost:3001/user/log",
+        { email, password },
+        { withCredentials: true }
+      );
+      console.log(message)
+      if (message === "Logged-In Successfully") {
+        navigate("/");
+      } else if (message === "Invalid Email Or Password !!") {
+        toast.error(message);
+      } else if (message === "Please verify your account") {
+        setFlag(true);
+      } else if (
+        message ===
+        "Your application is still in review and once it's verfied you will be noticed over email"
+      ) {
+        setSellerFlag(true);
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   }
 
-  return ( 
-      <section className="text-center text-lg-start">
-      <style>
-        {`
-      .cascading-right {
-        margin-right: -50px;
-      }
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+    setErrors({
+      ...errors,
+      [e.target.name]: "",
+    });
+  };
 
-      @media (max-width: 991.98px) {
-        .cascading-right {
-          margin-right: 0;
-        }
-      }
-      .btngreen{
-        color:#198754
-      }
-      `}
-      </style>
-
-      <div className="container py-4">
-        <div className="row g-0 align-items-center">
-          <div className="col-lg-6 mb-5 mb-lg-0">
-            <div
-              className="card cascading-right"
-              style={{
-                background: "hsla(0, 0%, 100%, 0.55)",
-                backdropFilter: "blur(30px)",
-              }}
-            >
-              <div className="card-body p-5 shadow-5 text-center">
-                <h2 className="fw-bold mb-5 btngreen">Log In</h2>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                  <div className="form-outline mb-4">
-                    <input
-                      type="email"
-                      id="form3Example3"
-                      className="form-control"
-                      name="email"
-                      placeholder="Email address"
-                      required
-                    />
-                    <label
-                      className="form-label"
-                      htmlFor="form3Example3"
-                    ></label>
-                  </div>
-
-                  <div className="form-outline mb-4">
-                    <input
-                      type="password"
-                      id="form3Example4"
-                      className="form-control"
-                      name="password"
-                      placeholder="Password"
-                      required
-                    />
-                    <label
-                      className="form-label"
-                      htmlFor="form3Example4"
-                    ></label>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="btn btn-success btn-block mb-4"
-                  >
-                    Log In
-                  </button>
-
-                  <div className="text-center">
-                    <p>or sign up with:</p>
-                    <div>
-                      <div>
-                        <button
-                          type="button"
-                          className=" btn btn-link btn-floating mx-1 "
-                        >
-                          <Facebook />
-                        </button>
-
-                        <button
-                          type="button"
-                          className="  btn btn-link btn-floating mx-1 "
-                          style={{ height: "3.5rem" }}
-                        >
-                          <Google />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
+  return (
+    <MDBContainer fluid className="mt-4">
+      <MDBRow className="d-flex justify-content-center align-items-center h-100">
+        <MDBCol col="12">
+          <MDBCard
+            className="bg-white my-5 mx-auto"
+            style={{ borderRadius: "1rem", maxWidth: "500px" }}
+          >
+            <MDBCardBody className="p-5 d-flex flex-column align-items-center">
+              <div className="d-flex align-items-center mb-4">
+                <h2 style={{ color: " #088178" }} className="fw-bold mb-0 m-2">
+                  Welcome to
+                </h2>
+                <img
+                  className="w-90"
+                  src="../../Assets/img/logo.png"
+                  alt="logo"
+                />
               </div>
-            </div>
-          </div>
+              <h2 className="fw-bold mb-2">Sign in now !</h2>
+              <p className="text-white-50 mb-3">
+                Please enter your login and password!
+              </p>
 
-          <div className="d-none d-lg-block col-lg-6 mb-5 mb-lg-0">
-            <img src="./Assets/img/blog/b3.jpg" style={{ width: "100%" }} alt="login_photo" />
-          </div>
-        </div>
-      </div>
-    </section>
+              <MDBInput
+                wrapperClass="mb-4 w-100"
+                label="Email address"
+                id="formControlLg"
+                type="email"
+                size="lg"
+                name="email"
+                value={email}
+                onChange={handleInputChange}
+              />
+              {errors.email && <p className="text-danger">{errors.email}</p>}
+
+              <MDBInput
+                wrapperClass="mb-4 w-100"
+                label="Password"
+                id="formControlLg"
+                type="password"
+                size="lg"
+                name="password"
+                value={password}
+                onChange={handleInputChange}
+              />
+              {errors.password && (
+                <p className="text-danger">{errors.password}</p>
+              )}
+
+              <div className="d-flex justify-content-between align-items-center mb-4 w-100">
+                {/* Added inline style for hover effect */}
+                <NavLink
+                  style={{ color: " #088178", textDecoration: "none" }}
+                  to="#"
+                  className="text-decoration-none"
+                  // Inline style for hover effect
+                  onMouseOver={(e) => (e.target.style.color = "blue")}
+                  onMouseOut={(e) => (e.target.style.color = "#088178")}
+                >
+                  Forget password ?
+                </NavLink>
+                {flag && (
+                  <NavLink
+                    onMouseOver={(e) => (e.target.style.color = "blue")}
+                    onMouseOut={(e) => (e.target.style.color = "red")}
+                  >
+                    Verify your account now !
+                  </NavLink>
+                )}
+              </div>
+              {sellerFlag && (
+                <p style={{ color: "green" }}>
+                  DearSir, Your application is still in review and once it's
+                  verfied you will be rached out by email
+                </p>
+              )}
+              <MDBBtn
+                size="lg"
+                onClick={handleSubmit}
+                style={{ backgroundColor: " #088178" }}
+              >
+                Login
+              </MDBBtn>
+
+              <hr className="my-4" />
+              <div className="d-flex gap-4">
+                <Google className="" />
+                <Facebook />
+              </div>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   );
 }
- 
-export default Sign;
+
+export default SignIn;

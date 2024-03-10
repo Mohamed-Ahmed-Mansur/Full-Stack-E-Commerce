@@ -1,72 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import prdImg from '../../Assets/img/products/f2.jpg';
+import axios from 'axios';
+import Reviews from './Reviews';
 
-// const ProDetailsContainer = styled.div`
-//   display: flex;
-//   margin-top: 20px;
-// `;
 
-// const SingleProImage = styled.div`
-//   width: 40%;
-//   margin-right: 50px;
-// `;
-
-// const SmallImgGroup = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-// `;
-
-// const SmallImgCol = styled.div`
-//   flex-basis: 24%;
-//   cursor: pointer;
-// `;
-
-// const SingleProDetails = styled.div`
-//   width: 50%;
-//   padding-top: 30px;
-
-//   h4 {
-//     padding: 40px 0 20px 0;
-//   }
-
-//   h2 {
-//     font-size: 26px;
-//   }
-
-//   select {
-//     display: block;
-//     padding: 5px 10px;
-//     margin-bottom: 10px;
-//   }
-
-//   input {
-//     width: 50px;
-//     height: 47px;
-//     padding-left: 10px;
-//     font-size: 16px;
-//     margin-right: 10px;
-
-//     &:focus {
-//       outline: none;
-//     }
-//   }
-
-//   button {
-//     background-color: #088178;
-//     color: #fff;
-//   }
-
-//   span {
-//     line-height: 25px;
-//   }
-// `;
-
-// const FontAwesomeIcon = styled.span`
-//   &:before {
-//     content: "\f07a";
-//     font-weight: 800;
-//   }
-// `;
 const ProDetailsSection = styled.section`
   display: flex;
   margin-top: 20px;
@@ -88,7 +27,8 @@ const SingleProImage = styled.div`
     margin-top: 20px;
 
     .small-img-col {
-      flex-basis: 24%;
+      flex-basis: 35%;
+      margin:2px;
 
       img {
         width: 100%;
@@ -103,7 +43,8 @@ const SingleProDetails = styled.div`
 
   h6 {
     margin-bottom: 10px;
-    x
+    font-size: 20px;
+    
   }
 
   h4 {
@@ -115,11 +56,18 @@ const SingleProDetails = styled.div`
     font-size: 36px;
     color: #088178;
     margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  h3 {
+    font-size: 40px;
+    font-weight:600;
+    margin-bottom: 20px;
+    
   }
 
   select {
     display: block;
-    width: 172px;
+    width: 195px;
     padding: 10px;
     margin-bottom: 10px;
   }
@@ -150,15 +98,18 @@ const SingleProDetails = styled.div`
   }
 
   h4 {
-    font-size: 20px;
+    font-size: 25px;
     margin-top: 20px;
   }
 
   span {
-    line-height: 25px;
+    font-size: 18px;
   }
 `;
 const Details = () => {
+  const {ProductId} = useParams()
+  // console.log(ProductId)
+  const [ProDetails,setProDetails]=useState([]);
 
     const [quantity, setQuantity] = useState(1);
 
@@ -166,32 +117,40 @@ const Details = () => {
       const newValue = event.target.value;
       setQuantity(newValue);
     };
+
+    useEffect(  ()=>{
+      axios.get(`http://localhost:3001/products/${ProductId}`)
+      .then(response => {
+       setProDetails(response.data);
+        // console.log( response.data)
+      });
+    },[ProductId] )
+    
     return (
        
         <div className='container'>
             <ProDetailsSection className="section-p1">
                 <SingleProImage>
-                    <img src="../../Assets/img/products/f1.jpg" alt="Main Product" />
+                    <img src={ProDetails.images && ProDetails.images.length > 0 ? ProDetails.images[0] : prdImg} alt="Main Product" />
                     <div className="small-img-group">
                     <div className="small-img-col">
-                        <img src="../../Assets/img/products/f1.jpg" alt="Small Product 1" />
+                        <img src={ProDetails.images && ProDetails.images.length > 0 ? ProDetails.images[1] : prdImg} alt="Main Product" />
                     </div>
                     <div className="small-img-col">
-                        <img src="../../Assets/img/products/f2.jpg" alt="Small Product 2" />
+                        <img src={ProDetails.images && ProDetails.images.length > 0 ? ProDetails.images[2] : prdImg} alt="Main Product" />
+                    
                     </div>
+                  
                     <div className="small-img-col">
-                        <img src="../../Assets/img/products/f3.jpg" alt="Small Product 3" />
-                    </div>
-                    <div className="small-img-col">
-                        <img src="../../Assets/img/products/f4.jpg" alt="Small Product 4" />
-                    </div>
+                    <img src={ProDetails.images && ProDetails.images.length > 0 ? ProDetails.images[0] : prdImg} alt="Main Product" />
+                     </div>
                     </div>
                 </SingleProImage>
 
                 <SingleProDetails>
-                    <h6>Home / T-Shirt</h6>
-                    <h4>Men's Fashion T Shirt</h4>
-                    <h2>$139.00</h2>
+                    <h3>{ProDetails.title}</h3>
+                    <h6>{ProDetails.category}</h6>
+                    <h2>${ProDetails.price ? ProDetails.price.toFixed(2) : 'Price not available'}</h2>
                     <select id="size">
                     <option>Select Size</option>
                     <option>XL</option>
@@ -201,23 +160,23 @@ const Details = () => {
                     <option>Medium</option>
                     </select>
                     <input type="number" 
-                    // value="1"
                     value={quantity}
                     min="1"
                     onChange={handleQuantityChange} />
                     <button className="normal">
                     Add To Cart
                     </button>
-                    <h4>Product Details</h4>
+                    <h4>Product Details:</h4>
                     <span>
-                    The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100%
-                    cotton, this classic fir preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck
-                    and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the
-                    ultimate head-turning package.
+                      {ProDetails.description}
                     </span>
                 </SingleProDetails>
             </ProDetailsSection>
+
+            <Reviews ProDetails={ProDetails}></Reviews>
         </div>
+
+        
     );
 }
 

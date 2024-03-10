@@ -14,9 +14,10 @@
 }
 #card:hover {
   /* box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1); */
-  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.07);
 }
-#card .fa-star {
+#card .fa-star,
+#card .fa-star-half {
   color: #efbb2d;
   font-weight: 0.8rem;
   margin-left: 0.3rem;
@@ -80,7 +81,7 @@
 /* ============ NAVBAR ============ */
 
 #navbar {
-  background-color: #e3e6f3 !important;
+  /* background-color: #e3e6f3 !important; */
   /* box-shadow: 0 15px 5px 5px rgba(0, 0, 0, 0.06); */
   padding: 1rem 4rem;
 }
@@ -362,5 +363,41 @@
 .bgGrey {
   background-color: #e2e8f0 !important;
 }
+
+/* ============ LANDING ============ */
+
+#landing {
+  background: url('./Assets/landing.png') no-repeat;
+  height: 90vh;
+  background-position: left;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#landing h4 {
+  padding-bottom: 15px;
+  font-weight: 700;
+}
+
+#landing h1 {
+  color: #088178;
+  font-weight: 700;
+}
+
+#landing button {
+  background-image: url('./Assets/img/button.png');
+  background-color: transparent;
+  border: 0;
+  color: #088178;
+  padding: 14px 80px 14px 65px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* END LANDING */
 
 /* END PROFILE */

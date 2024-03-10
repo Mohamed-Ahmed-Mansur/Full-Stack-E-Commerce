@@ -49,7 +49,7 @@ export class UserService {
     if (founduser.isSeller && !founduser.admit)
       return {
         message:
-          "Your application is still in review and once it's verfied you will be noticed over email  ",
+          "Your application is still in review and once it's verfied you will be noticed over email",
       };
     if (founduser.flag) {
       let istruepass = await bcrypt.compare(
@@ -65,7 +65,7 @@ export class UserService {
       res.cookie('x-auth-token', myJWT, { expires: expirationDate });
       return { message: 'Logged-In Successfully' };
     } else {
-      return { message: 'Please verify your account ' };
+      return { message: 'Please verify your account' };
     }
   }
 
@@ -226,7 +226,7 @@ export class UserService {
     return this.userModel.find({ userID: id });
   }
 
-  async update(id: number, updateUserDto: regDto) {
+  async update(id: number, updateUserDto: any) {
     let updatedPro = await this.userModel.updateOne(
       { userID: id },
       { $set: updateUserDto },

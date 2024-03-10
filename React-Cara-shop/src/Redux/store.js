@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import checkLoginReducer from "./Slices/checkLogin";
-import userLoginReducer from './Slices/userLogin';
+import SignUpEmailReducer from "./Slice/Email";
+
 
 const store = configureStore({
   reducer: {
-    checkLogin: checkLoginReducer,
-    userLogin: userLoginReducer
-  }
+    SignUpEmail:SignUpEmailReducer
+  },
 });
 export default store;
+
+

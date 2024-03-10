@@ -7,6 +7,7 @@ import Footer from '../Components/Home/footer';
 import Newsletter from '../Components/Home/newLetters';
 import ImgBanner2 from '../Components/Home/imgBanner2';
 import ImgBanner from '../Components/Home/imgBanner';
+import Statistics from '../Components/Home/statistics';
 
 export default function Home() {
   return (
@@ -23,6 +24,9 @@ export default function Home() {
         </section>
         <section>
           <NewArrival></NewArrival>
+        </section>
+        <section>
+          <Statistics />
         </section>
         <section>
           <ImgBanner></ImgBanner>

@@ -1,8 +1,10 @@
 
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Statistics from './statistics';
 
 const Section = styled.section`
-overflow-x: hidden;
+  overflow-x: hidden;
   background-image: url('assets/img/banner/b14.png');
   background-position: 20% 30%;
   background-color: #041e42;
@@ -69,7 +71,11 @@ const Newsletter = () => {
         </NewsText>
         <form className="col-md-5 col-xsm-12 d-flex mx-5">
           <Input type="text" placeholder="Your email address" />
-          <Button >Sign Up</Button>
+          <Link to="/signup">
+            <Button>
+              Sign Up
+            </Button>
+          </Link>
         </form>
       </div>
     </Section>

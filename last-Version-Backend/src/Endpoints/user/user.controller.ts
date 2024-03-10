@@ -78,7 +78,7 @@ export class UserController {
   }
   @UsePipes(ValidationPipe)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: regDto) {
+  update(@Param('id') id: string, @Body() updateUserDto: any) {
     return this.userService.update(+id, updateUserDto);
   }
   @UserRoles(Role.Admin, Role.Seller)
