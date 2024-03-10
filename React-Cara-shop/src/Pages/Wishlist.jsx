@@ -4,11 +4,15 @@ import Footer from '../Components/Home/footer';
 import styled from 'styled-components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import Cookies from 'universal-cookie';
 
 export default function Wishlist() {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  const JWT = cookies.get("x-auth-token");
 
   function handleHeart(product) {
     const favItems = JSON.parse(localStorage.getItem('fav')) || [];
@@ -66,6 +70,7 @@ export default function Wishlist() {
       bodyClassName: 'toast-body',
       toastClassName: 'toast-container',
     });
+    navigate("/wishlist")
   }
 
   const renderStars = (rating) => {
@@ -77,8 +82,10 @@ export default function Wishlist() {
   };
 
   useEffect(() => {
-    setProducts(JSON.parse(localStorage.getItem('fav')) || []);
-  }, []);
+    if(JWT) {
+      setProducts(JSON.parse(localStorage.getItem('fav')) || []);
+    }
+  }, [JWT]);
 
   return (
     <>

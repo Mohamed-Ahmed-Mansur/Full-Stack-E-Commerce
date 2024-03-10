@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { LoginDto } from './dto/log.dto';
@@ -59,7 +60,9 @@ export class UserService {
       let myJWT = await this.jwtService.sign({
         user: founduser,
       });
-      res.header('x-auth-token', myJWT);
+      const expirationDate = new Date();
+      expirationDate.setMonth(expirationDate.getMonth() + 1);
+      res.cookie('x-auth-token', myJWT, { expires: expirationDate });
       return { message: 'Logged-In Successfully' };
     } else {
       return { message: 'Please verify your account ' };
@@ -119,7 +122,9 @@ export class UserService {
         let myJWT = await this.jwtService.sign({
           user: foundUser,
         });
-        res.header('x-auth-token', myJWT);
+        const expirationDate = new Date();
+        expirationDate.setMonth(expirationDate.getMonth() + 1);
+        res.cookie('x-auth-token', myJWT, { expires: expirationDate });
         return { message: 'Account Verified', user: updateUser };
       } else {
         return { message: 'Please insert the right code' };

@@ -3,17 +3,16 @@ import prdImg from '../Assets/img/products/f1.jpg';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import Cookies from 'universal-cookie';
 
 export default function Card({ product }) {
   const navigate = useNavigate();
   const [heartIcons, setHeartIcons] = useState({});
-  const { checkLogin: { checkLogin } } = useSelector(state => state)
-
-  console.log(checkLogin)
+  const cookies = new Cookies();
+  const JWT = cookies.get("x-auth-token");
 
   function handleCart(product, e) {
-    if(!checkLogin) {
+    if(!JWT) {
       e.stopPropagation();
       return toast.warning("Please Log in First")
     }
@@ -48,10 +47,12 @@ export default function Card({ product }) {
       toastClassName: 'toast-container',
     });
     e.stopPropagation();
+    navigate("/");
   }
 
   function handleHeart(product, e) {
-    if(!checkLogin) {
+    const JWT = cookies.get("x-auth-token");
+    if(!JWT) {
       e.stopPropagation();
       return toast.warning("Please Log in First")
     }
@@ -77,6 +78,7 @@ export default function Card({ product }) {
       });
     } else {
       // If the item doesn't exist in the wishlist, add it
+      product.quantity = 1;
       favorites.push(product);
       localStorage.setItem('fav', JSON.stringify(favorites));
       toast.success('Added to Wishlist Successfully', {
@@ -91,6 +93,7 @@ export default function Card({ product }) {
         bodyClassName: 'toast-body',
         toastClassName: 'toast-container',
       });
+      navigate("/");
     }
 
     setHeartIcons(prevState => ({

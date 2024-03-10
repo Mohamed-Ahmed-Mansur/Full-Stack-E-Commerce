@@ -11,9 +11,9 @@ import ImgBanner from '../Components/Home/imgBanner';
 export default function Home() {
   return (
     <>
-      <nav style={{ position: "sticky" }}>
-        <Navbar></Navbar>
-      </nav>
+    
+      <Navbar></Navbar>
+
       <section>
         <Landing></Landing>
       </section>

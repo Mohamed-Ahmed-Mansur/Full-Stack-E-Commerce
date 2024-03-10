@@ -1,14 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Navbar from '../Components/Home/Navbar';
 import Footer from '../Components/Home/footer';
 import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 const Cart = () => {
   const [products, setProducts] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
+  const cookies = new Cookies();
+  const JWT = cookies.get("x-auth-token");
 
   function handleAdd(product) {
     const updatedProducts = products.map(p => {
@@ -51,15 +53,6 @@ const Cart = () => {
     });
     setProducts(updatedProducts);
   }
-
-  function calculateSupTotals() {
-    let sum = 0;
-    products.forEach(product => {
-      sum += product.price * product.quantity;
-    });
-    setSubtotal(sum); 
-    setTotal(sum); // Assuming total is same as subtotal for now
-  }
   
   async function handlePayment() {
     const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
@@ -81,12 +74,22 @@ const Cart = () => {
   }
 
   useEffect(() => {
+    function calculateSupTotals() {
+      let sum = 0;
+      products.forEach(product => {
+        sum += product.price * product.quantity;
+      });
+      setSubtotal(sum); 
+      setTotal(sum); 
+    }
     calculateSupTotals();
   }, [products]);
 
   useEffect(() => {
-    setProducts(JSON.parse(localStorage.getItem('cart')) || []);
-  }, []);
+    if(JWT) {
+      setProducts(JSON.parse(localStorage.getItem('cart')) || []);
+    }
+  }, [JWT]);
 
   return (
     <>

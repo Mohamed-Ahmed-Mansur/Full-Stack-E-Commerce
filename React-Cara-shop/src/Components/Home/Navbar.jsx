@@ -1,9 +1,40 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Cookies from 'universal-cookie';
+import { jwtDecode } from "jwt-decode";
 
 export default function Navbar() {
+  const cookies = new Cookies(); 
+  const JWT = cookies.get("x-auth-token");
+  const navigate = useNavigate();
+  if(JWT) {
+    var { user } = jwtDecode(JWT);
+  }
+  // Retrieve cart and fav arrays from localStorage
+  const cart = JSON.parse(localStorage.getItem('cart')) || null;
+  const fav = JSON.parse(localStorage.getItem('fav')) || null;
+
+  // Function to sum the quantity values from an array of objects
+  const sumQuantity = (items = []) => {
+    if (!items) {
+      return false;
+    }
+    return items.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  // Sum the quantity values in the cart array
+  const cartTotalQuantity = sumQuantity(cart);
+
+  // Sum the quantity values in the fav array
+  const favTotalQuantity = sumQuantity(fav);
+  function handleLogOut() {
+    cookies.remove('x-auth-token');
+    navigate("/");
+  }
+
   return (
-      <div
+      <nav
         id="navbar"
         className="navbar navbar-expand-md navbar-light bg-light sticky-top"
         style={{   boxShadow: "0 15px  5px  5px rgba(0, 0, 0, .06)"}}
@@ -53,14 +84,14 @@ export default function Navbar() {
 
             <div className="cart d-flex align-items-center">
               {/* PROFILE */}
-              <div className="dropdown me-3">
+              {JWT && <div className="dropdown me-3">
                 <span
                   className="btn btn-outline-secondary dropdown-toggle"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <i className="fa-regular fa-user" /> Hi, userName
+                  <i className="fa-regular fa-user" /> Hi, {user.name}
                 </span>
                 <ul className="dropdown-menu">
                   <li>
@@ -75,7 +106,7 @@ export default function Navbar() {
                   <li>
                     <NavLink className="dropdown-item" to="/profile/orders">
                       <i
-                        class="fa-solid fa-box-open"
+                        className="fa-solid fa-box-open"
                         style={{ width: '20px' }}
                       ></i>
                       Orders
@@ -84,7 +115,7 @@ export default function Navbar() {
                   <li>
                     <NavLink className="dropdown-item" to="/profile/favourite">
                       <i
-                        class="fa-regular fa-heart"
+                        className="fa-regular fa-heart"
                         style={{ width: '20px' }}
                       ></i>
                       favourite
@@ -92,34 +123,33 @@ export default function Navbar() {
                   </li>
 
                   <li>
-                    <hr class="dropdown-divider" />
+                    <hr className="dropdown-divider" />
                   </li>
 
                   <li className=" m-auto text-center">
-                    <a
+                    <button
                       className="dropdown-item"
-                      href="#"
                       style={{ color: '#088178', fontWeight: '600' }}
+                      onClick={handleLogOut}
                     >
                       Logout
-                    </a>
+                    </button>
                   </li>
                 </ul>
-              </div>
+              </div>}
               {/* SIGN IN/ UP */}
-              <div id="signUpNav" className="dropdown me-3">
-                <a
+              {!JWT && <div id="signUpNav" className="dropdown me-3">
+                <span
                   className="btn dropdown-toggle"
-                  href="#"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Signin
-                </a>
+                  Sign in
+                </span>
                 <ul className="dropdown-menu p-2 m-auto text-center">
                   <li className="btn btn-warning p-0">
-                    <NavLink className="dropdown-item" to="/profile/account">
+                    <NavLink className="dropdown-item" to="/signin">
                       Sign in
                     </NavLink>
                   </li>
@@ -131,30 +161,30 @@ export default function Navbar() {
                       </span>
                       <NavLink
                         className="dropdown-item d-inline-block p-0 w-auto fw-bold"
-                        to="/profile/orders"
+                        to="/signup"
                       >
                         Sign up
                       </NavLink>
                     </span>
                   </li>
                 </ul>
-              </div>
+              </div>}
 
-              <NavLink className="nav-link" to="/wishlist">
+              {JWT && <><NavLink className="nav-link" to="/wishlist">
                 <span className="me-4 position-relative">
                   <i
                     className="fa-solid fa-heart"
                     style={{ fontSize: '1.2rem' }}
                   ></i>
-                  <span
+                 {fav && <span
                     className="position-absolute top-0 start-100 translate-middle badge rounded-pill text-dark"
                     style={{
                       backgroundColor: 'rgb(181 188 195)',
                       fontSize: ' 0.6rem',
                     }}
                   >
-                    1
-                  </span>
+                    {favTotalQuantity}
+                  </span>}
                 </span>
               </NavLink>
 
@@ -164,26 +194,20 @@ export default function Navbar() {
                     className="fa-solid fa-cart-shopping"
                     style={{ fontSize: '1.2rem' }}
                   ></i>
-                  <span
+                {cart && <span
                     className="position-absolute top-0 start-100 translate-middle badge rounded-pill text-dark"
                     style={{
                       backgroundColor: 'rgb(181 188 195)',
                       fontSize: ' 0.6rem',
                     }}
                   >
-                    1
-                  </span>
+                    {cartTotalQuantity}
+                  </span>}
                 </span>
-              </NavLink>
-
-              <span className="">
-                <NavLink className="nav-link " to="/signin">
-                  Sign in
-                </NavLink>
-              </span>
+              </NavLink></>}
             </div>
           </div>
         </div>
-      </div>
+      </nav>
   );
 }
