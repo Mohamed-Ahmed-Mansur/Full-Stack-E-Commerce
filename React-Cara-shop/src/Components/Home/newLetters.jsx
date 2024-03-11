@@ -1,7 +1,5 @@
-
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Statistics from './statistics';
 
 const Section = styled.section`
   overflow-x: hidden;

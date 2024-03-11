@@ -6,7 +6,6 @@ import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
 
 export default function Featured() {
 
-  
   let [data1, setdata1] = useState([]);
 
   useEffect(() => {

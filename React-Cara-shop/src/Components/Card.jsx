@@ -53,22 +53,57 @@ export default function Card({ product }) {
         bodyClassName: 'toast-body',
         toastClassName: 'toast-container',
       });
+      navigate("/");
     }
   }
 
   async function handleHeart(product, e) {
     e.stopPropagation();
     if (!JWT) {
-      return toast.warning('Please Log in First');
+      return toast.warning('Please Log in First', {
+        position: 'bottom-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        className: 'custom-toast',
+        bodyClassName: 'toast-body',
+        toastClassName: 'toast-container',
+      });
     }
     user = await getUser();
     if (wishlist.includes(product.id)) {
-      return toast.warning("Already Added to Your Wishlist!");
+      return toast.warning("Already Added to Your Wishlist!", {
+        position: 'bottom-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        className: 'custom-toast',
+        bodyClassName: 'toast-body',
+        toastClassName: 'toast-container',
+      });
     }
     const { status } = await axios.patch(`http://localhost:3001/user/${user.userID}`, { wishlist: [...wishlist, product.id] });
     if(status === 200) {
-      toast.success("Added Successfuly");
-      setWishlist([...wishlist, product.id]);
+      toast.success("Added Successfuly", {
+        position: 'bottom-right',
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        className: 'custom-toast',
+        bodyClassName: 'toast-body',
+        toastClassName: 'toast-container',
+      });
+      setWishlist(pre => [...pre, product.id]);
+      navigate("/");
     }
   }
 

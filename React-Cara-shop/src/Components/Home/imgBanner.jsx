@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const SmBannerSection = styled.section`
@@ -67,8 +67,6 @@ const HoverButton = styled.button`
 `;
 
 const ImgBanner = () => {
-  const [isHovered1, setHovered1] = useState(false);
-  const [isHovered2, setHovered2] = useState(false);
 
   return (
     <div className='container'>
@@ -79,9 +77,6 @@ const ImgBanner = () => {
         <BannerSpan>The best classic dress is on sale at cara</BannerSpan>
         <HoverButton
           className="white"
-          onMouseEnter={() => setHovered1(true)}
-          onMouseLeave={() => setHovered1(false)}
-          hovered={isHovered1} //props
         >
           Learn More
         </HoverButton>
@@ -92,9 +87,6 @@ const ImgBanner = () => {
         <BannerSpan>The best classic dress is on sale at cara</BannerSpan>
         <HoverButton
           className="white"
-          onMouseEnter={() => setHovered2(true)}
-          onMouseLeave={() => setHovered2(false)}
-          hovered={isHovered2}
         >
           Collection
         </HoverButton>
