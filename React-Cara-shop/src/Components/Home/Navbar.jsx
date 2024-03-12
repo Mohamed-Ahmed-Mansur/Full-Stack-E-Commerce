@@ -1,22 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Cookies from 'universal-cookie';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserAction, resetUser } from '../../Redux/Slice/User';
 
 export default function Navbar() {
+  const userAuth = useSelector(state => state.user.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cookies = new Cookies(); 
   const JWT = cookies.get("x-auth-token");
-  const [user, setUser] = useState({});
-  const navigate = useNavigate();
+  if(JWT) {
+    var { user } = jwtDecode(JWT);
+  } 
 
   function handleLogOut() {
     cookies.remove('x-auth-token');
-    navigate("/home");
+    dispatch(resetUser());
+    navigate("/");
   }
+
+  useEffect(() => {
+    dispatch(getUserAction());
+  }, [dispatch]);
 
   const handleSignUp = (()=> {
     Swal.fire({
@@ -47,16 +57,6 @@ export default function Navbar() {
       }
     });
   });
-
-  useEffect(() => {
-    if(JWT) {
-      async function getUser() {
-        const { data } = await axios.get(`http://localhost:3001/user/${jwtDecode(JWT).user.userID}`);
-        setUser(data[0]);
-      }
-      getUser();
-    }
-  }, [JWT]);
 
   return (
       <NavbarContainer
@@ -202,14 +202,14 @@ export default function Navbar() {
                     className="fa-solid fa-heart"
                     style={{ fontSize: '1.2rem', color: "#088178" }}
                   ></i>
-                 {user.wishlist?.length > 0 && <span
+                 {userAuth?.wishlist?.length > 0 && <span
                     className="position-absolute top-0 start-100 translate-middle badge rounded-pill text-dark"
                     style={{
                       backgroundColor: 'rgb(181 188 195)',
                       fontSize: ' 0.6rem',
                     }}
                   >
-                    {user.wishlist?.length}
+                    {userAuth?.wishlist?.length}
                   </span>}
                 </span>
               </NavLink>
@@ -220,14 +220,14 @@ export default function Navbar() {
                     className="fa-solid fa-cart-shopping"
                     style={{ fontSize: '1.2rem', color: "#088178" }}
                   ></i>
-                {user.cart?.length > 0 && <span
+                {userAuth?.cart?.length > 0 && <span
                     className="position-absolute top-0 start-100 translate-middle badge rounded-pill text-dark"
                     style={{
                       backgroundColor: 'rgb(181 188 195)',
                       fontSize: ' 0.6rem',
                     }}
                   >
-                    {user.cart?.length}
+                    {userAuth?.cart?.length}
                   </span>}
                 </span>
               </NavLink></>}

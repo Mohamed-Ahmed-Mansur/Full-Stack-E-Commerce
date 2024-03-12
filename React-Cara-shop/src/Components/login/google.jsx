@@ -2,23 +2,21 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 
 const Google = () => {
-   
-    return (
-        <div>
-      
-       <GoogleOAuthProvider clientId="822438674667-8jfo5kfet1gs8vlr6llil57a1d86vn78.apps.googleusercontent.com">
+  return (
+    <div>
+      <GoogleOAuthProvider clientId="822438674667-8jfo5kfet1gs8vlr6llil57a1d86vn78.apps.googleusercontent.com">
         <GoogleLogin
           // width={'6px'}
-          type='icon'
-          shape='rectangular'
+          type="icon"
+          shape="rectangular"
           //  textButton="G"
-          text='G'
+          text="G"
           // text=' '
-          onSuccess={credentialresponse => {
+          onSuccess={(credentialresponse) => {
             console.log(credentialresponse);
           }}
           onError={() => {
-            console.log('login failed');
+            console.log("login failed");
           }}
           // onClick={handleGoogleLogin}
         >
@@ -27,10 +25,6 @@ const Google = () => {
       </GoogleOAuthProvider>
       <br></br>
 
-    
-
-        
-      
       {/* {facebookProfile && (
         <div>
           <h2>Facebook Profile</h2>
@@ -40,7 +34,7 @@ const Google = () => {
         </div> */}
       {/* )} */}
     </div>
-    );
-}
+  );
+};
 
 export default Google;

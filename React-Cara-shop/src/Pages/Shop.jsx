@@ -4,33 +4,13 @@ import Categories from '../Components/Shop/Categories';
 import Search from '../Components/Shop/Search';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import Footer from '../Components/Home/footer';
 
 export default function Shop() {
   const [currCat, setcurrCat] = useState(null);
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
-
   const { category, subcategory } = useParams();
-
-
-  const fetchData = async () => {
-    try {
-      let url;
-
-      if (subcategory) {
-        url = `http://localhost:3001/products/${category}/${subcategory}`;
-      } else if (currCat) {
-        url = `http://localhost:3001/products/findByCategory/category/${currCat}`;
-      } else {
-        url = 'http://localhost:3001/products';
-      }
-      await axios.get(url).then((res) => {
-        setData(res.data);
-      });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
 
   const fetchCategories = async () => {
     await axios.get('http://localhost:3001/category').then((res) => {
@@ -42,11 +22,26 @@ export default function Shop() {
   useEffect(() => {
     setcurrCat(category);
     fetchCategories();
+    const fetchData = async () => {
+      try {
+        let url;
+  
+        if (subcategory) {
+          url = `http://localhost:3001/products/${category}/${subcategory}`;
+        } else if (currCat) {
+          url = `http://localhost:3001/products/findByCategory/category/${currCat}`;
+        } else {
+          url = 'http://localhost:3001/products';
+        }
+        await axios.get(url).then((res) => {
+          setData(res.data);
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
     fetchData();
   }, [category, subcategory, currCat]);
-
-  // useEffect(() => {
-  // }, [currCat, subcategory]);
 
   return (
     <>
@@ -79,6 +74,7 @@ export default function Shop() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

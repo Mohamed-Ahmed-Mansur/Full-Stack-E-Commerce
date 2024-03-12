@@ -29,6 +29,7 @@ function SignIn() {
 
   let [flag, setFlag] = useState(false);
   let [sellerFlag, setSellerFlag] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -42,41 +43,48 @@ function SignIn() {
       return;
     }
 
-    try {
-      const {
-        data: { message },
-      } = await axios.post(
-        "http://localhost:3001/user/log",
-        { email, password },
-        { withCredentials: true }
-      );
-      console.log(message)
-      if (message === "Logged-In Successfully") {
+    const {
+      data: { message },
+    } = await axios.post(
+      "http://localhost:3001/user/log",
+      { email, password },
+      { withCredentials: true }
+    );
+
+    if (message === "Logged-In Successfully") {
+      setTimeout(()=>{
         navigate("/");
-      } else if (message === "Invalid Email Or Password !!") {
-        toast.error(message);
-      } else if (message === "Please verify your account") {
-        setFlag(true);
-      } else if (
-        message ===
-        "Your application is still in review and once it's verfied you will be noticed over email"
-      ) {
-        setSellerFlag(true);
-      }
-    } catch (error) {
-      console.error("Error:", error);
+      }, 1000);
+    } else if (message === "Invalid Email Or Password !!") {
+      toast.error(message);
+    } else if (message === "Please verify your account") {
+      setFlag(true);
+    } else if (
+      message ===
+      "Your application is still in review and once it's verfied you will be rached out by email"
+    ) {
+      setSellerFlag(true);
+    } else {
+      console.log(message );
     }
   }
 
   const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
     setErrors({
       ...errors,
-      [e.target.name]: "",
+      [name]: "",
     });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -116,24 +124,40 @@ function SignIn() {
               {errors.email && <p className="text-danger">{errors.email}</p>}
 
               <MDBInput
-                wrapperClass="mb-4 w-100"
+                wrapperClass="mb-4 w-100 position-relative d-flex justify-content-between"
                 label="Password"
-                id="formControlLg"
-                type="password"
+                id="password"
+                type={showPassword ? "text" : "password"}
                 size="lg"
                 name="password"
                 value={password}
                 onChange={handleInputChange}
-              />
+              >
+                <i
+                  className={`bi bi-eye${
+                    showPassword ? "-slash" : ""
+                  } position-absolute top-50  translate-middle-y`}
+                  onClick={togglePasswordVisibility}
+                  style={{
+                    height: "30px",
+                    width: "30px",
+                    cursor: "pointer",
+                    right: "10px",
+                    lineHeight: "30px",
+                    textAlign: "center",
+                    border: "1px solid black",
+                    borderRadius: "15px",
+                  }}
+                ></i>
+              </MDBInput>
               {errors.password && (
                 <p className="text-danger">{errors.password}</p>
               )}
 
               <div className="d-flex justify-content-between align-items-center mb-4 w-100">
-                {/* Added inline style for hover effect */}
                 <NavLink
                   style={{ color: " #088178", textDecoration: "none" }}
-                  to="#"
+                  to="/forgetPassEmail"
                   className="text-decoration-none"
                   // Inline style for hover effect
                   onMouseOver={(e) => (e.target.style.color = "blue")}
@@ -141,15 +165,17 @@ function SignIn() {
                 >
                   Forget password ?
                 </NavLink>
-                {flag && (
-                  <NavLink
-                    onMouseOver={(e) => (e.target.style.color = "blue")}
-                    onMouseOut={(e) => (e.target.style.color = "red")}
-                  >
-                    Verify your account now !
-                  </NavLink>
-                )}
               </div>
+              {flag && (
+                <NavLink
+                  to="/verifyEmail"
+                  className="mb-3"
+                  onMouseOver={(e) => (e.target.style.color = "blue")}
+                  onMouseOut={(e) => (e.target.style.color = "red")}
+                >
+                  Your account isn't Verified, verify it now !
+                </NavLink>
+              )}
               {sellerFlag && (
                 <p style={{ color: "green" }}>
                   DearSir, Your application is still in review and once it's
