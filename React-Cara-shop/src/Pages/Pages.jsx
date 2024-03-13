@@ -72,6 +72,11 @@ import SignUpUser from '../Components/SignUp/SignUpUser';
 import SignUpSeller from '../Components/SignUp/SignUpSeller';
 import VerfiySeller from '../Components/SignUp/verfiySeller';
 import Message from '../Components/SignUp/message';
+import UpdatePassForm from '../Components/login/updatePassForm';
+import UpdatePassCode from '../Components/login/updatePassCode';
+import VerifyEmail from '../Components/login/verifyAcc-sendEmail';
+import ForgetPassEmail from '../Components/login/ForgetPass-Email';
+import VerfiySellerLogin from '../Components/login/verfiySeller';
 import Dashboard from '../scenes/dashboard';
 import Team from '../scenes/team';
 import Form from "../scenes/form";
@@ -163,6 +168,26 @@ const Pages = () => {
           <Route path="/user/reg" element={<VerfiySeller />} />
           <Route path="/Message" element={<Message />} />
           {/* Additional routes */}
+          <Route
+              path="/updatePassForm"
+              element={<UpdatePassForm></UpdatePassForm>}
+            ></Route>
+            <Route
+              path="/updatePassCode"
+              element={<UpdatePassCode></UpdatePassCode>}
+            ></Route>
+            <Route
+              path="/verifyEmail"
+              element={<VerifyEmail></VerifyEmail>}
+            ></Route>
+            <Route
+              path="/verifyCode"
+              element={<VerfiySellerLogin></VerfiySellerLogin>}
+            ></Route>
+            <Route
+              path="/forgetPassEmail"
+              element={<ForgetPassEmail></ForgetPassEmail>}
+            ></Route>
         </Routes>
       </BrowserRouter>
     </Provider>

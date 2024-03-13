@@ -1,44 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import prdImg from '../Assets/img/products/f1.jpg';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
 import { toast } from "react-toastify";
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserAction } from '../Redux/Slice/User';
 
 export default function Card({ product }) {
+  const user = useSelector(state => state.user.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [wishlist, setWishlist] = useState([]);
-  const cookies = new Cookies();
-  const JWT = cookies.get('x-auth-token');
-  
-  if (JWT) {
-    var { user } = jwtDecode(JWT);
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (JWT) {
-        const { data } = await axios.get(`http://localhost:3001/user/${user.userID}`);
-        setWishlist(data[0].wishlist || []);
-      }
-    };
-
-    fetchData();
-  }, [JWT, user]);
-
-  async function getUser() {
-    const { data } = await axios.get(`http://localhost:3001/user/${user.userID}`);
-    return data[0];
-  }
 
   async function handleCart(product, e) {
     e.stopPropagation();
-    if (!JWT) {
+    console.log(user);
+    if (!user) {
       return toast.warning('Please Log in First');
     }
-    user = await getUser();
     const { status } = await axios.patch(`http://localhost:3001/user/${user.userID}`, { cart: [...user.cart, product.id] });
     if(status === 200) {
       toast.success('Added to Cart Successfully', {
@@ -53,42 +32,35 @@ export default function Card({ product }) {
         bodyClassName: 'toast-body',
         toastClassName: 'toast-container',
       });
-      navigate("/");
+      dispatch(getUserAction());
     }
   }
 
   async function handleHeart(product, e) {
     e.stopPropagation();
-    if (!JWT) {
-      return toast.warning('Please Log in First', {
-        position: 'bottom-right',
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        className: 'custom-toast',
-        bodyClassName: 'toast-body',
-        toastClassName: 'toast-container',
-      });
+    if (!user) {
+      return toast.warning('Please Log in First');
     }
-    user = await getUser();
-    if (wishlist.includes(product.id)) {
-      return toast.warning("Already Added to Your Wishlist!", {
-        position: 'bottom-right',
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        className: 'custom-toast',
-        bodyClassName: 'toast-body',
-        toastClassName: 'toast-container',
-      });
+    if (user?.wishlist?.includes(product.id)) {
+      const updatedWishList = user?.wishlist.filter(id => id !== product.id);
+      const { status } = await axios.patch(`http://localhost:3001/user/${user.userID}`, { wishlist: updatedWishList });
+      if (status === 200) {
+        dispatch(getUserAction());
+        return toast.error("Removed from Your Wishlist!", {
+          position: 'bottom-right',
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          className: 'custom-toast',
+          bodyClassName: 'toast-body',
+          toastClassName: 'toast-container',
+        });
+      }
     }
-    const { status } = await axios.patch(`http://localhost:3001/user/${user.userID}`, { wishlist: [...wishlist, product.id] });
+    const { status } = await axios.patch(`http://localhost:3001/user/${user.userID}`, { wishlist: [...user?.wishlist, product.id] });
     if(status === 200) {
       toast.success("Added Successfuly", {
         position: 'bottom-right',
@@ -102,8 +74,7 @@ export default function Card({ product }) {
         bodyClassName: 'toast-body',
         toastClassName: 'toast-container',
       });
-      setWishlist(pre => [...pre, product.id]);
-      navigate("/");
+      dispatch(getUserAction());
     }
   }
 
@@ -150,7 +121,7 @@ export default function Card({ product }) {
           style={{ top: '20px', right: '20px' }}
         >
           <i
-            className={`fa-heart${wishlist.includes(product.id) ? ' fas text-danger' : ' far'}`}
+            className={`fa-heart${user && user?.wishlist?.includes(product.id) ? ' fas text-danger' : ' far'}`}
             style={{ fontSize: '2rem', cursor: 'pointer' }}
             onClick={(e) => handleHeart(product, e)}
           ></i>
