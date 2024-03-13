@@ -1,23 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import Cookies from "universal-cookie";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
-const cookies = new Cookies();
-const JWT = cookies.get('x-auth-token');
+export const getUserAction = createAsyncThunk(
+  "user/getUserAction",
+  async () => {
+    const cookies = new Cookies();
+    let JWT = cookies.get("x-auth-token");
 
-export const getUserAction = createAsyncThunk("user/getUserAction", async () => {
-  const { data } = await axios.get(`http://localhost:3001/user/${jwtDecode(JWT).user.userID}`);
-  return data[0];
-});
+    const { data } = await axios.get(
+      `http://localhost:3001/user/${jwtDecode(JWT).user.userID}`
+    );
+    return data[0];
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
   initialState: { user: null },
   reducers: {
     resetUser: (state) => {
+      console.log(state.user);
       state.user = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserAction.fulfilled, (state, action) => {

@@ -52,9 +52,7 @@ function SignIn() {
     );
 
     if (message === "Logged-In Successfully") {
-      setTimeout(()=>{
-        navigate("/");
-      }, 1000);
+      navigate("/");
     } else if (message === "Invalid Email Or Password !!") {
       toast.error(message);
     } else if (message === "Please verify your account") {
@@ -65,7 +63,7 @@ function SignIn() {
     ) {
       setSellerFlag(true);
     } else {
-      console.log(message );
+      console.log(message);
     }
   }
 

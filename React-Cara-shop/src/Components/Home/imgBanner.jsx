@@ -2,11 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SmBannerSection = styled.section`
-
   padding: 20px;
-  font-family: 'Spartan', sans-serif;
-  font-size: .9rem;
-
 `;
 
 const BannerBox = styled.div`
@@ -15,19 +11,11 @@ const BannerBox = styled.div`
   justify-content: center;
   align-items: flex-start;
   background-image: url('assets/img/banner/b17.jpg');
-//   min-width: 580px;
-//   width: 49%;
-//   height: 50vh;
   height: 300px;
-  
   background-size: cover;
   background-position: center;
   padding: 30px;
   margin-bottom: 20px;
-
-  @media (max-width: 1268px) {
-    width: 100%;
-  }
 `;
 
 const BannerBox2 = styled(BannerBox)`
@@ -57,44 +45,36 @@ const HoverButton = styled.button`
   background: ${(props) => (props.hovered ? '#088178' : 'transparent')};
   border: 1px solid ${(props) => (props.hovered ? '#088178' : '#fff')};
   color: #fff;
-  padding:7px;
-  font-weight:600;
-  padding-left:15px;
-  padding-right:15px;
+  padding: 10px 20px;
+  font-weight: 600;
   cursor: pointer;
   outline: none;
-  transition: 0.6s;
+  transition: background-color 0.3s ease;
 `;
 
 const ImgBanner = () => {
-
   return (
-    <div className='container'>
-    <SmBannerSection  className=' row '>
-      <BannerBox className='col-lg-6 col-xsm-12 '>
-        <BannerH4>crazy deals</BannerH4>
-        <BannerH2>buy 1 get 1 free</BannerH2>
-        <BannerSpan>The best classic dress is on sale at cara</BannerSpan>
-        <HoverButton
-          className="white"
-        >
-          Learn More
-        </HoverButton>
-      </BannerBox>
-      <BannerBox2 className='col-lg-6 col-xsm-12'>
-        <BannerH4>spring/summer</BannerH4>
-        <BannerH2>upcoming season</BannerH2>
-        <BannerSpan>The best classic dress is on sale at cara</BannerSpan>
-        <HoverButton
-          className="white"
-        >
-          Collection
-        </HoverButton>
-      </BannerBox2>
+    <SmBannerSection className='container'>
+      <div className='row'>
+        <div className='col-lg-6 col-md-6 col-sm-12'>
+          <BannerBox>
+            <BannerH4>Crazy Deals</BannerH4>
+            <BannerH2>Buy 1 Get 1 Free</BannerH2>
+            <BannerSpan>The best classic dress is on sale at Cara</BannerSpan>
+            <HoverButton>Learn More</HoverButton>
+          </BannerBox>
+        </div>
+        <div className='col-lg-6 col-md-6 col-sm-12'>
+          <BannerBox2>
+            <BannerH4>Spring/Summer</BannerH4>
+            <BannerH2>Upcoming Season</BannerH2>
+            <BannerSpan>The best classic dress is on sale at Cara</BannerSpan>
+            <HoverButton>Collection</HoverButton>
+          </BannerBox2>
+        </div>
+      </div>
     </SmBannerSection>
-    </div>
   );
 };
 
 export default ImgBanner;
-

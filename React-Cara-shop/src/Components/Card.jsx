@@ -1,36 +1,38 @@
-import React from 'react';
-import prdImg from '../Assets/img/products/f1.jpg';
-import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import prdImg from "../Assets/img/products/f1.jpg";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserAction } from '../Redux/Slice/User';
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserAction } from "../Redux/Slice/User";
 
 export default function Card({ product }) {
-  const user = useSelector(state => state.user.user);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   async function handleCart(product, e) {
     e.stopPropagation();
-    console.log(user);
     if (!user) {
-      return toast.warning('Please Log in First');
+      return toast.warning("Please Log in First");
     }
-    const { status } = await axios.patch(`http://localhost:3001/user/${user.userID}`, { cart: [...user.cart, product.id] });
-    if(status === 200) {
-      toast.success('Added to Cart Successfully', {
-        position: 'bottom-right',
+    const { status } = await axios.patch(
+      `http://localhost:3001/user/${user.userID}`,
+      { cart: [...user.cart, product.id] }
+    );
+    if (status === 200) {
+      toast.success("Added to Cart Successfully", {
+        position: "bottom-right",
         autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        className: 'custom-toast',
-        bodyClassName: 'toast-body',
-        toastClassName: 'toast-container',
+        className: "custom-toast",
+        bodyClassName: "toast-body",
+        toastClassName: "toast-container",
       });
       dispatch(getUserAction());
     }
@@ -39,47 +41,53 @@ export default function Card({ product }) {
   async function handleHeart(product, e) {
     e.stopPropagation();
     if (!user) {
-      return toast.warning('Please Log in First');
+      return toast.warning("Please Log in First");
     }
     if (user?.wishlist?.includes(product.id)) {
-      const updatedWishList = user?.wishlist.filter(id => id !== product.id);
-      const { status } = await axios.patch(`http://localhost:3001/user/${user.userID}`, { wishlist: updatedWishList });
+      const updatedWishList = user?.wishlist.filter((id) => id !== product.id);
+      const { status } = await axios.patch(
+        `http://localhost:3001/user/${user.userID}`,
+        { wishlist: updatedWishList }
+      );
       if (status === 200) {
         dispatch(getUserAction());
         return toast.error("Removed from Your Wishlist!", {
-          position: 'bottom-right',
+          position: "bottom-right",
           autoClose: 4000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          className: 'custom-toast',
-          bodyClassName: 'toast-body',
-          toastClassName: 'toast-container',
+          className: "custom-toast",
+          bodyClassName: "toast-body",
+          toastClassName: "toast-container",
         });
       }
     }
-    const { status } = await axios.patch(`http://localhost:3001/user/${user.userID}`, { wishlist: [...user?.wishlist, product.id] });
-    if(status === 200) {
+    const { status } = await axios.patch(
+      `http://localhost:3001/user/${user.userID}`,
+      { wishlist: [...user?.wishlist, product.id] }
+    );
+    if (status === 200) {
       toast.success("Added Successfuly", {
-        position: 'bottom-right',
+        position: "bottom-right",
         autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        className: 'custom-toast',
-        bodyClassName: 'toast-body',
-        toastClassName: 'toast-container',
+        className: "custom-toast",
+        bodyClassName: "toast-body",
+        toastClassName: "toast-container",
       });
       dispatch(getUserAction());
     }
   }
 
   function handleNavigate(id) {
-    navigate('/details/' + id);
+    navigate("/details/" + +id);
   }
 
   const renderStars = () => {
@@ -106,23 +114,31 @@ export default function Card({ product }) {
     >
       <div
         className="image-container"
-        style={{ height: '200px', overflow: 'hidden', borderRadius: '20px' }}
+        style={{ height: "200px", overflow: "hidden", borderRadius: "20px" }}
       >
         <img
-          src={product.images && product.images.length > 0 ? product.images[0] : prdImg}
+          src={
+            product.images && product.images.length > 0
+              ? product.images[0]
+              : prdImg
+          }
           alt="productImg"
           className="w-100"
-          style={{ objectFit: 'contain', height: '100%', width: 'auto' }}
+          style={{ objectFit: "contain", height: "100%", width: "auto" }}
         />
       </div>
       {!product.boycott && (
         <div
           className="position-absolute py-1 px-2"
-          style={{ top: '20px', right: '20px' }}
+          style={{ top: "20px", right: "20px" }}
         >
           <i
-            className={`fa-heart${user && user?.wishlist?.includes(product.id) ? ' fas text-danger' : ' far'}`}
-            style={{ fontSize: '2rem', cursor: 'pointer' }}
+            className={`fa-heart${
+              user && user?.wishlist?.includes(product.id)
+                ? " fas text-danger"
+                : " far"
+            }`}
+            style={{ fontSize: "2rem", cursor: "pointer" }}
             onClick={(e) => handleHeart(product, e)}
           ></i>
         </div>
@@ -138,7 +154,7 @@ export default function Card({ product }) {
         <h5 className="title">
           {product.title.length < 20
             ? product.title
-            : product.title.slice(0, 20) + '...'}
+            : product.title.slice(0, 20) + "..."}
         </h5>
         <div className="stars">
           <span className="brand">({product.ratings})</span>
