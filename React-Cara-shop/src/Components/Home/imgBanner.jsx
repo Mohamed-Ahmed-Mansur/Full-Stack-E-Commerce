@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 const SmBannerSection = styled.section`
@@ -10,7 +10,7 @@ const BannerBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  background-image: url('assets/img/banner/b17.jpg');
+  background-image: url('assets/img/banner/b17.WebP');
   height: 300px;
   background-size: cover;
   background-position: center;
@@ -19,7 +19,7 @@ const BannerBox = styled.div`
 `;
 
 const BannerBox2 = styled(BannerBox)`
-  background-image: url('assets/img/banner/b10.jpg');
+  background-image: url('assets/img/banner/b10.WebP');
 `;
 
 const BannerH4 = styled.h4`
@@ -77,4 +77,4 @@ const ImgBanner = () => {
   );
 };
 
-export default ImgBanner;
+export default memo(ImgBanner);

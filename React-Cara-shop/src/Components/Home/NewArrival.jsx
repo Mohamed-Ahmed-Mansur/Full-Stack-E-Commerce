@@ -1,21 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import Card from '../Card';
 
-export default function NewArrival() {
+export default memo(function NewArrival() {
 
   let [data1, setdata1] = useState([]);
   
-  async function getData() {
-    try {
-      await fetch("http://localhost:3001/products").then(res => res.json()).then(data => setdata1(data.slice(0, 8)));
-    } catch (error) {
-      console.error("Error fetching data:", error);
+  useEffect(() => {
+    async function getData() {
+      try {
+        const productsResponse = await fetch("http://localhost:3001/products");
+        const productsData = await productsResponse.json();
+  
+        // Select the first 8 products
+        const selectedProducts = productsData.slice(0, 8);
+  
+        // Fetch details for each selected product concurrently using Promise.all()
+        const productDetailPromises = selectedProducts.map(product => fetch(`http://localhost:3001/products/${product.id}`).then(res => res.json()));
+  
+        // Wait for all requests to complete
+        const productDetails = await Promise.all(productDetailPromises);
+  
+        // Set the product details in state
+        setdata1(productDetails);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
-  }
-    useEffect(() => {
-      getData();
-    },[]);
-
+    getData();
+  }, []);
+  
   return (
     <section className="section-p1">
       <div className="row text-center mb-5">
@@ -34,4 +47,4 @@ export default function NewArrival() {
       </div>
     </section>
   );
-}
+});

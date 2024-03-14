@@ -3,24 +3,27 @@ import Card from '../Card';
 import '@splidejs/splide/dist/css/splide.min.css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
+import { memo } from 'react';
 
-export default function Featured() {
+export default memo(function Featured() {
 
   let [data1, setdata1] = useState([]);
-
+  
   useEffect(() => {
     async function getData() {
       try {
-        const data = await fetch("http://localhost:3001/orders").then(res => res.json());
-        data.reverse();
+        const ordersResponse = await fetch("http://localhost:3001/orders");
+        const ordersData = await ordersResponse.json();
+        ordersData.reverse();
   
-        const productIds = data.flatMap(prd => prd.productID);
-        // Used await Promise.all(...) to wait for all fetch requests to complete before updating the state.
-        const productDataArray = await Promise.all(productIds.map(async (p) => {
-          const response = await fetch(`http://localhost:3001/products/${p}`);
-          const productData = await response.json();
-          return productData;
-        }));
+        const productIds = ordersData.flatMap(prd => prd.productID);
+  
+        const productRequests = productIds.map(async (productId) => {
+          const productResponse = await fetch(`http://localhost:3001/products/${productId}`);
+          return productResponse.json();
+        });
+  
+        const productDataArray = await Promise.all(productRequests);
         setdata1(productDataArray);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -28,6 +31,7 @@ export default function Featured() {
     }
     getData();
   }, []);
+  
 
   return (
     <div id="featured" className='my-5'>
@@ -72,4 +76,4 @@ export default function Featured() {
       </div>
     </div>
   );
-}
+});

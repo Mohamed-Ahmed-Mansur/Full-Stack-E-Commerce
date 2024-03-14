@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from '../Card';
 
-export default function Search({ products, category }) {
+export default memo(function Search({ products, category }) {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState(null);
   const [sortBy, setSortBy] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(12);
+  const [postsPerPage] = useState(12);
 
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
@@ -121,7 +121,7 @@ export default function Search({ products, category }) {
       </div>
     </div>
   );
-}
+});
 
 const SearchContainer = styled.div`
   position: relative;

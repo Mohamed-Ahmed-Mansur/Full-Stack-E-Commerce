@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Cookies from "universal-cookie";
@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserAction, resetUser } from "../../Redux/Slice/User";
 
-export default function Navbar() {
+export default memo(function Navbar() {
   const userAuth = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function Navbar() {
 
   useEffect(() => {
     dispatch(getUserAction());
-  }, []);
+  }, [dispatch]);
 
   const handleSignUp = () => {
     Swal.fire({
@@ -264,7 +264,7 @@ export default function Navbar() {
       </div>
     </NavbarContainer>
   );
-}
+});
 
 const NavbarContainer = styled.nav`
   background: linear-gradient(

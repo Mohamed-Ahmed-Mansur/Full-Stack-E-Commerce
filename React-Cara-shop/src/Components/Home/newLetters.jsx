@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -80,4 +81,4 @@ const Newsletter = () => {
   );
 };
 
-export default Newsletter;
+export default memo(Newsletter);

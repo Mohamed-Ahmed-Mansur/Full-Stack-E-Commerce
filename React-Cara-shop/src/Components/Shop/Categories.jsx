@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-export default function Categories({ categories, subcategory }) {
+export default memo(function Categories({ categories, subcategory }) {
   const [currSub, setCurrSub] = useState('');
   const [cat, setCat] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -72,4 +72,4 @@ export default function Categories({ categories, subcategory }) {
       </div>
     </div>
   );
-}
+});

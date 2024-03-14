@@ -1,44 +1,51 @@
-import React from 'react';
-import Navbar from '../Components/Home/Navbar';
-import Landing from '../Components/Home/Landing';
-import Featured from '../Components/Home/Featured';
-import NewArrival from '../Components/Home/NewArrival';
-import Footer from '../Components/Home/footer';
-import Newsletter from '../Components/Home/newLetters';
-import ImgBanner2 from '../Components/Home/imgBanner2';
-import ImgBanner from '../Components/Home/imgBanner';
-import Statistics from '../Components/Home/statistics';
+import React, { lazy, Suspense } from 'react';
 
-export default function Home() {
+const Navbar = lazy(() => import('../Components/Home/Navbar'));
+const Landing = lazy(() => import('../Components/Home/Landing'));
+const Featured = lazy(() => import('../Components/Home/Featured'));
+const NewArrival = lazy(() => import('../Components/Home/NewArrival'));
+const Footer = lazy(() => import('../Components/Home/footer'));
+const Newsletter = lazy(() => import('../Components/Home/newLetters'));
+const ImgBanner2 = lazy(() => import('../Components/Home/imgBanner2'));
+const ImgBanner = lazy(() => import('../Components/Home/imgBanner'));
+const Statistics = lazy(() => import('../Components/Home/statistics'));
+
+const SuspenseFallback = () => (<div className="spinner-border container-fluid d-flex justify-content-center" role="status">
+<span className="visually-hidden">Loading...</span>
+</div>);
+
+const Home = () => {
   return (
-    <>
-      <Navbar></Navbar>
+    <Suspense fallback={<SuspenseFallback />}>
+      <Navbar />
       <section>
-        <Landing></Landing>
+        <Landing />
       </section>
       <main>
         <section>
-          <Featured></Featured>
+          <Featured />
         </section>
         <section>
-          <ImgBanner></ImgBanner>
+          <ImgBanner />
         </section>
         <section>
-          <NewArrival></NewArrival>
+          <NewArrival />
         </section>
         <section>
           <Statistics />
         </section>
         <section>
-          <ImgBanner2></ImgBanner2>
+          <ImgBanner2 />
         </section>
         <section>
-          <Newsletter></Newsletter>
+          <Newsletter />
         </section>
       </main>
       <footer>
-        <Footer></Footer>
+        <Footer />
       </footer>
-    </>
+    </Suspense>
   );
-}
+};
+
+export default Home;

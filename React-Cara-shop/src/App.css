@@ -367,8 +367,8 @@
 /* ============ LANDING ============ */
 
 #landing {
-  background: url('./Assets/landing.png') no-repeat;
-  height: 90vh;
+  background: url('./Assets/landing.WebP') no-repeat;
+  height: 45vh;
   background-position: left;
   background-size: cover;
   display: flex;

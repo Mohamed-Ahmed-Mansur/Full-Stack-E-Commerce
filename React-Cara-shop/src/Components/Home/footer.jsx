@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 export const Footerr = styled.footer`
@@ -151,4 +151,4 @@ const Footer = () => {
   );
 }
 
-export default Footer;
+export default memo(Footer);

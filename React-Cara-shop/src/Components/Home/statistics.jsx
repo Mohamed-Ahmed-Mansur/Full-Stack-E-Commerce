@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, memo } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 const countUp = (start, end, duration, setValue) => {
@@ -92,4 +92,4 @@ const Statistics = () => {
   );
 };
 
-export default Statistics;
+export default memo(Statistics);

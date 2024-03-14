@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useCallback } from "react";
 import prdImg from "../Assets/img/products/f1.jpg";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserAction } from "../Redux/Slice/User";
 
-export default function Card({ product }) {
+export default memo(function Card({ product }) {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ export default function Card({ product }) {
     navigate("/details/" + +id);
   }
 
-  const renderStars = () => {
+  const renderStars = useCallback(() => {
     const stars = [];
     const fullStars = Math.floor(product.ratings);
     const remainder = product.ratings - fullStars;
@@ -104,7 +104,7 @@ export default function Card({ product }) {
     }
 
     return stars;
-  };
+  }, [product.ratings]);
 
   return (
     <section
@@ -172,4 +172,4 @@ export default function Card({ product }) {
       </div>
     </section>
   );
-}
+});
