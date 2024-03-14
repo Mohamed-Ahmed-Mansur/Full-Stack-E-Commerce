@@ -90,7 +90,7 @@ const Footer = () => {
                   </div>
                 <div className="row justify-content-evenly  mt-3" style={{ "textAlign": "left"}}>
                   <div className="col-md-3 ">
-                  <FooterLogo className="logo" src="assets/img/logo.png" alt="Logo" />
+                  <FooterLogo className="logo" src="../assets/img/logo.png" alt="Logo" />
                     {/* <FooterLogo className="logo" src="assets/img/logo.png" alt="Logo" /> */}
                     <h4 style={{  "fontSize": "14px","paddingBottom": "15px", "marginTop":"4px"}}>Contact</h4>
                     <FooterParagraph><strong>Address:</strong> El-Hosary, 6th of October, Giza</FooterParagraph>
@@ -130,11 +130,11 @@ const Footer = () => {
                     <FooterHeader>Install App</FooterHeader>
                     <FooterParagraph>From App Store or Google Play</FooterParagraph>
                     <div className="row justify-content-start " >
-                      <div className="col-5"><img src="assets/img/pay/app.jpg" alt="App Store" /></div>
-                      <div className="col-5"><img src="assets/img/pay/play.jpg" alt="Google Play" /></div>
+                      <div className="col-5"><img src="../assets/img/pay/app.jpg" alt="App Store" /></div>
+                      <div className="col-5"><img src="../assets/img/pay/play.jpg" alt="Google Play" /></div>
                     </div>
                     <FooterParagraph>Secured Payment Gateways</FooterParagraph>
-                    <img src="assets/img/pay/pay.png" alt="Payment Gateways" />
+                    <img src="../assets/img/pay/pay.png" alt="Payment Gateways" />
                   </InstallContainer>
                 </div>
         

@@ -13,7 +13,9 @@ export let UserSchema = new mongoose.Schema({
   flag: Boolean,
   admit: Boolean,
   recent: [],
+  sellerProducts: [],
   wishlist: [],
   checkout: [],
   cart: [],
+  image: String,
 });

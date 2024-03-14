@@ -9,6 +9,8 @@ import { Response } from 'express';
 import emailjs from '@emailjs/nodejs';
 import { verifycationCode } from './dto/verifycationCode.dto';
 import { log } from 'console';
+import { Readable } from 'stream';
+import * as fs from 'fs';
 
 @Injectable()
 export class UserService {
@@ -25,9 +27,9 @@ export class UserService {
   async sendEmail(templateParams: any): Promise<any> {
     try {
       emailjs
-        .send('service_q4wqgaa', 'template_lwvsxaz', templateParams, {
-          publicKey: '-bpXADAZdMWL07XkF',
-          privateKey: 'sNMbAWG7_yWNuGvmlT8S7',
+        .send('service_b0xm5gf', 'template_qtaro0e', templateParams, {
+          publicKey: 'UlECVUELiPKwmAoKz',
+          privateKey: 'Bjde393re_NC-GJWyd1vg',
         })
         .then(
           (response) => {
@@ -46,12 +48,20 @@ export class UserService {
   async log(loguser: LoginDto, res: Response) {
     let founduser = await this.found(loguser.email);
     if (!founduser) return { message: 'Invalid Email Or Password !!' };
-    if (founduser.isSeller && !founduser.admit)
-      return {
-        message:
-          "Your application is still in review and once it's verfied you will be noticed over email",
-      };
+
     if (founduser.flag) {
+      if (founduser.isSeller && !founduser.admit) {
+        let istruepass = await bcrypt.compare(
+          loguser.password,
+          founduser.password,
+        );
+        if (!istruepass) return { message: 'Invalid Email Or Password !!' };
+
+        return {
+          message:
+            "Your application is still in review and once it's verfied you will be noticed over email",
+        };
+      }
       let istruepass = await bcrypt.compare(
         loguser.password,
         founduser.password,
@@ -65,6 +75,11 @@ export class UserService {
       res.cookie('x-auth-token', myJWT, { expires: expirationDate });
       return { message: 'Logged-In Successfully' };
     } else {
+      let istruepass = await bcrypt.compare(
+        loguser.password,
+        founduser.password,
+      );
+      if (!istruepass) return { message: 'Invalid Email Or Password !!' };
       return { message: 'Please verify your account' };
     }
   }
@@ -101,7 +116,9 @@ export class UserService {
       email: reguser.email,
       code: confirmationCode,
     });
+    await this.varifModel.deleteMany({ email: reguser.email });
     await Newvarif.save();
+
     const result = await this.sendEmail(templateParams);
     return {
       message: 'Created successfully please verifiy your account',
@@ -110,6 +127,8 @@ export class UserService {
   }
   async verify(code: verifycationCode, res: Response) {
     let foundUser = await this.varifModel.findOne({ email: code.email });
+    let foundUserJWT = await this.userModel.findOne({ email: code.email });
+
     if (foundUser) {
       if (foundUser.code == code.code) {
         let updateUser = await this.userModel.updateOne(
@@ -118,9 +137,9 @@ export class UserService {
             $set: { flag: true },
           },
         );
-        await this.varifModel.deleteOne({ email: code.email });
+        await this.varifModel.deleteMany({ email: code.email });
         let myJWT = await this.jwtService.sign({
-          user: foundUser,
+          user: foundUserJWT,
         });
         const expirationDate = new Date();
         expirationDate.setMonth(expirationDate.getMonth() + 1);
@@ -173,7 +192,10 @@ export class UserService {
       return { message: 'Wrong Email' };
     }
   }
-  async updatePass(EmailAndpassword: { email: string; password: string }) {
+  async updatePass(
+    EmailAndpassword: { email: string; password: string },
+    res: Response,
+  ) {
     let foundUser = await this.userModel.findOne({
       email: EmailAndpassword.email,
     });
@@ -188,6 +210,12 @@ export class UserService {
           $set: { password: EmailAndpassword.password },
         },
       );
+      let myJWT = await this.jwtService.sign({
+        user: foundUser,
+      });
+      const expirationDate = new Date();
+      expirationDate.setMonth(expirationDate.getMonth() + 1);
+      res.cookie('x-auth-token', myJWT, { expires: expirationDate });
       return { message: 'Password Updated ', user: updateUser };
     } else {
       return { message: 'Email is wrong' };
@@ -241,5 +269,35 @@ export class UserService {
   async remove(id: number) {
     let deleUser = await this.userModel.deleteOne({ userID: id });
     return { message: 'User Deleted', deleUser };
+  }
+  async uploadFile(file: Express.Multer.File, email: string) {
+    const filePath = `public/${file.originalname}`;
+
+    const readStream = Readable.from(file.buffer);
+
+    const writeStream = fs.createWriteStream(filePath);
+
+    readStream.pipe(writeStream);
+
+    writeStream.on('error', (error) => {
+      console.error('Error copying file:', error);
+    });
+
+    writeStream.on('finish', () => {
+      console.log('File copied successfully.');
+    });
+    let newFilePath = filePath.split('/')[1];
+    let updateUser = await this.userModel.updateOne(
+      { email },
+      {
+        $set: { image: 'http://localhost:3001/' + newFilePath },
+      },
+    );
+
+    return {
+      filePath,
+      updateUser,
+      user: await this.userModel.findOne({ email }),
+    };
   }
 }

@@ -9,6 +9,8 @@ import {
   UsePipes,
   ValidationPipe,
   Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from './dto/log.dto';
@@ -17,6 +19,7 @@ import { Response } from 'express';
 import { verifycationCode } from './dto/verifycationCode.dto';
 import { UserRoles } from './roles.decoretor';
 import { Role } from './roles.enum';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
@@ -31,6 +34,14 @@ export class UserController {
   @Post('/reg')
   reg(@Body() reguser: regDto) {
     return this.userService.reg(reguser);
+  }
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('imageID')) // 'imageID' is the field name used in the form
+  async uploadFile(
+    @UploadedFile() imageID: Express.Multer.File,
+    @Body('email') email: string,
+  ) {
+    return this.userService.uploadFile(imageID, email);
   }
   @UsePipes(ValidationPipe)
   @Post('/verify')
@@ -57,8 +68,11 @@ export class UserController {
   }
   @UsePipes(ValidationPipe)
   @Post('/updatePass')
-  updatePass(@Body() EmailAndpassword: { email: string; password: string }) {
-    return this.userService.updatePass(EmailAndpassword);
+  updatePass(
+    @Body() EmailAndpassword: { email: string; password: string },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.userService.updatePass(EmailAndpassword, res);
   }
   @Get()
   findAll() {

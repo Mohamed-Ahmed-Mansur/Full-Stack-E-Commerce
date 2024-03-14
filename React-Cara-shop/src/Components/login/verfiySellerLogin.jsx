@@ -128,7 +128,7 @@ const ResendButton = styled.button`
   }
 `;
 
-const UpdatePassCode = () => {
+const VerfiySellerLogin = () => {
   const SignUpEmail = useSelector((state) => state.SignUpEmail.SignUpEmail);
   const [seconds, setSeconds] = useState(60);
   const [isInputWritten, setIsInputWritten] = useState(false);
@@ -165,12 +165,16 @@ const UpdatePassCode = () => {
   const handleVerify = async () => {
     const code = verificationCode.join("");
     if (code && isInputWritten) {
-      axios
-        .post("http://localhost:3001/user/verify", {
-          email: SignUpEmail,
-          code: +code,
-        })
-        .then((response) => {
+      await axios
+        .post(
+          "http://localhost:3001/user/verify",
+          {
+            email: SignUpEmail,
+            code: +code,
+          },
+          { withCredentials: true }
+        )
+        .then(async (response) => {
           if (response.data.message === "Account Verified") {
             toast.success("Correct Code");
             navigate("/");
@@ -278,4 +282,4 @@ const UpdatePassCode = () => {
   );
 };
 
-export default UpdatePassCode;
+export default VerfiySellerLogin;

@@ -21,7 +21,6 @@ const userSlice = createSlice({
   initialState: { user: null },
   reducers: {
     resetUser: (state) => {
-      console.log(state.user);
       state.user = null;
     },
   },
@@ -30,7 +29,6 @@ const userSlice = createSlice({
       state.user = action.payload;
     });
     builder.addCase(getUserAction.rejected, (state) => {
-      console.log("error");
       state.user = null;
     });
   },

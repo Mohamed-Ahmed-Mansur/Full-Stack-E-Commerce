@@ -85,15 +85,17 @@ function UpdatePassForm() {
     }
 
     try {
-      const res = await axios.post("http://localhost:3001/user/updatePass", {
-        email: SignUpEmail,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:3001/user/updatePass",
+        {
+          email: SignUpEmail,
+          password,
+        },
+        { withCredentials: true }
+      );
       if (res.data.message === "Password Updated ") {
         toast.success("Password updated successfully");
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
+        navigate("/");
       } else {
         setErrors({ ...errors, password: "Failed to update password." });
       }

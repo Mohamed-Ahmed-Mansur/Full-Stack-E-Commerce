@@ -8,7 +8,6 @@ import {
   IsOptional,
   IsString,
   Length,
-  Min,
   MinLength,
 } from 'class-validator';
 
@@ -17,6 +16,9 @@ export class regDto {
   @IsString()
   @MinLength(3)
   public name: string;
+
+  @IsNotEmpty()
+  public image: any;
 
   @IsNotEmpty()
   @IsString()
@@ -50,6 +52,9 @@ export class regDto {
   @IsArray()
   @IsNotEmpty()
   public wishlist: [];
+  @IsArray()
+  @IsNotEmpty()
+  public sellerProducts: [];
 
   @IsArray()
   @IsNotEmpty()

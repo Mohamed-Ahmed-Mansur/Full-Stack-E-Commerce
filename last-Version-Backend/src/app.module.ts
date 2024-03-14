@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,6 +11,8 @@ import { CategoryModule } from './Endpoints/category/category.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './Endpoints/user/roles.gurd';
 import { CheckOutModule } from './Endpoints/check-out/check-out.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 //
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CheckOutModule } from './Endpoints/check-out/check-out.module';
     UserModule,
     CategoryModule,
     CheckOutModule,
+    ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', 'public') }),
     MongooseModule.forRoot(
       'mongodb+srv://hosamabdelaty25:0115060708090Mm@cluster0.2c6xoym.mongodb.net/E-Commerce',
     ),

@@ -8,6 +8,7 @@ export let ProductsSchema = new mongoose.Schema({
   quantity: Number,
   title: String,
   description: String,
+
   subcategory: String,
   brand: String,
   category: String,

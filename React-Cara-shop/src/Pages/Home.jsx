@@ -12,9 +12,7 @@ import Statistics from '../Components/Home/statistics';
 export default function Home() {
   return (
     <>
-    
       <Navbar></Navbar>
-
       <section>
         <Landing></Landing>
       </section>
@@ -23,13 +21,15 @@ export default function Home() {
           <Featured></Featured>
         </section>
         <section>
+          <ImgBanner></ImgBanner>
+        </section>
+        <section>
           <NewArrival></NewArrival>
         </section>
         <section>
           <Statistics />
         </section>
         <section>
-          <ImgBanner></ImgBanner>
           <ImgBanner2></ImgBanner2>
         </section>
         <section>

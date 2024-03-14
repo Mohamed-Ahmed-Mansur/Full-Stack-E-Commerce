@@ -129,7 +129,7 @@ const Reviews = ({ ProDetails }) => {
     e.preventDefault();
 
     // Set submitted to true to render a different UI if needed
-    if (JWT) {
+    if (JWT && comment) {
       setSubmitted(true);
       Swal.fire({
         title: "Thank you!",
@@ -145,7 +145,7 @@ const Reviews = ({ ProDetails }) => {
   };
 
   const addReview = () => {
-    if (JWT) {
+    if (JWT && comment) {
       const newReview = {
         ratings: rating,
         userName: user.name,
@@ -154,6 +154,8 @@ const Reviews = ({ ProDetails }) => {
         userID: user.userID,
       };
       setReviews([...reviews, newReview]);
+    } else if (!comment) {
+      toast.warning("Please add Your comment");
     } else {
       toast.warning("Please Log in First!");
     }
@@ -166,8 +168,7 @@ const Reviews = ({ ProDetails }) => {
   };
 
   useEffect(() => {
-    // console.log('Updated Reviews:', reviews);
-    // console.log({comments: reviews })
+
     if (JWT) {
       const header = {
         headers: {
@@ -179,25 +180,7 @@ const Reviews = ({ ProDetails }) => {
           `http://localhost:3001/products/${ProDetails.id}`,
           { comments: reviews },
           header
-        )
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          // console.error('Error updating comments:', error);
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // console.error('Response data:', error.response.data);
-            // console.error('Response status:', error.response.status);
-            // console.error('Response headers:', error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // console.error('No response received. Request details:', error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            // console.error('Error setting up the request. Error details:', error.message);
-          }
-        });
+        );
     }
   }, [reviews, JWT, ProDetails.id]);
 

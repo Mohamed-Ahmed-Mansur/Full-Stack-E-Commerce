@@ -107,12 +107,6 @@ const Details = () => {
   // console.log(ProductId)
   const [ProDetails, setProDetails] = useState([]);
 
-  const [quantity, setQuantity] = useState(1);
-
-  const handleQuantityChange = (event) => {
-    const newValue = event.target.value;
-    setQuantity(newValue);
-  };
   useEffect(() => {
     axios
       .get(`http://localhost:3001/products/${ProductId}`)
@@ -177,20 +171,6 @@ const Details = () => {
               ? ProDetails.price.toFixed(2)
               : "Price not available"}
           </h2>
-          <select id="size">
-            <option>Select Size</option>
-            <option>XL</option>
-            <option>XXL</option>
-            <option>Small</option>
-            <option>Large</option>
-            <option>Medium</option>
-          </select>
-          <input
-            type="number"
-            value={quantity}
-            min="1"
-            onChange={handleQuantityChange}
-          />
           <button className="normal">Add To Cart</button>
           <h4>Product Details:</h4>
           <span>{ProDetails.description}</span>

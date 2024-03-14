@@ -1,6 +1,4 @@
-
 import React, { useState } from 'react';
-
 
 const Sellconfirm = () => {
     const [isOpen, setIsOpen] = useState(false);

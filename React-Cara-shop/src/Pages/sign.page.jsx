@@ -59,7 +59,7 @@ function SignIn() {
       setFlag(true);
     } else if (
       message ===
-      "Your application is still in review and once it's verfied you will be rached out by email"
+      "Your application is still in review and once it's verfied you will be noticed over email"
     ) {
       setSellerFlag(true);
     } else {
@@ -176,8 +176,7 @@ function SignIn() {
               )}
               {sellerFlag && (
                 <p style={{ color: "green" }}>
-                  DearSir, Your application is still in review and once it's
-                  verfied you will be rached out by email
+                  Your application is still in review and once it's verfied you will be noticed over email
                 </p>
               )}
               <MDBBtn

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SmBannerSection = styled.section`
-  padding: 20px;
+  // padding: 20px;
 `;
 
 const BannerBox = styled.div`
@@ -54,7 +54,7 @@ const HoverButton = styled.button`
 
 const ImgBanner = () => {
   return (
-    <SmBannerSection className='container'>
+    <SmBannerSection className="container">
       <div className='row'>
         <div className='col-lg-6 col-md-6 col-sm-12'>
           <BannerBox>

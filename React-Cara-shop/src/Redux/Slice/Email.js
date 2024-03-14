@@ -6,7 +6,6 @@ const SignUpEmail = createSlice({
   reducers: {
     setSignUpEmail: (state, action) => {
       state.SignUpEmail = action.payload;
-      console.log(state.SignUpEmail )
     },
   },
 });
