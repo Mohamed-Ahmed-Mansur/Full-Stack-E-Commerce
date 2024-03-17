@@ -37,14 +37,18 @@ const Container = styled.div`
   width: 100%;
   height: 10rem;
   display: flex;
-  transition: color 2s ease;
+  justify-content: space-around;
+  align-items: center;
+  background: linear-gradient(135deg, #3f51b5, #2196f3);
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
 `;
 
 const SubContainer = styled.div`
-  width: 33.33%;
-  height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
 `;
 
@@ -77,15 +81,15 @@ const Statistics = () => {
 
   return (
     <div ref={containerRef}>
-      <Container style={{ color: `${textColor}` }}>
+      <Container style={{ margin: "2rem 0" }}>
         <SubContainer>
-          <AnimatedNumber>+{value1}&nbsp;<b>Orders</b></AnimatedNumber>
+          <AnimatedNumber isVisible={value1 > 0}>+{value1}&nbsp;<b>Orders</b></AnimatedNumber>
         </SubContainer>
         <SubContainer>
-          <AnimatedNumber>+{value2}&nbsp;<b>Customers</b></AnimatedNumber>
+          <AnimatedNumber isVisible={value2 > 0}>+{value2}&nbsp;<b>Customers</b></AnimatedNumber>
         </SubContainer>
         <SubContainer>
-          <AnimatedNumber>+{value3}&nbsp;<b>Sellers</b></AnimatedNumber>
+          <AnimatedNumber isVisible={value3 > 0}>+{value3}&nbsp;<b>Sellers</b></AnimatedNumber>
         </SubContainer>
       </Container>
     </div>

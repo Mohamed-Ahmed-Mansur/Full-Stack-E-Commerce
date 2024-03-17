@@ -26,7 +26,7 @@ const FAQ = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/user");
+        const response = await fetch("https://backend-last-v.onrender.com/user");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -51,7 +51,7 @@ const FAQ = () => {
           'x-auth-token': JWT,
         }
       }
-      axios.delete(`http://localhost:3001/user/${rowId}`, header)
+      axios.delete(`https://backend-last-v.onrender.com/user/${rowId}`, header)
       .then(response => {
         setMockDataContacts((prevData) =>
         prevData.filter((row) => row.userID !== rowId)

@@ -133,7 +133,7 @@ const SignUpSeller = () => {
 
   const handleRegister = async () => {
     await axios
-      .post("http://localhost:3001/user/reg", {
+      .post("https://backend-last-v.onrender.com/user/reg", {
         ...DataSeller,
         isAdmin: false,
         isSeller: true,
@@ -171,7 +171,7 @@ const SignUpSeller = () => {
     formData.append("imageID", restDataSeller.imageID);
     formData.append("email", DataSeller.email);
     axios
-      .post("http://localhost:3001/user/upload", formData, {
+      .post("https://backend-last-v.onrender.com/user/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

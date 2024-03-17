@@ -14,7 +14,7 @@ export default function OrderDetails() {
   const fetchProduct = async (productID) => {
     try {
       const { data: products } = await axios.get(
-        `http://localhost:3001/products/${productID}`
+        `https://backend-last-v.onrender.com/products/${productID}`
       );
       return products;
     } catch (error) {
@@ -27,7 +27,7 @@ export default function OrderDetails() {
       return toast.warning("Please Log in First");
     }
     const { status } = await axios.patch(
-      `http://localhost:3001/user/${user.userID}`,
+      `https://backend-last-v.onrender.com/user/${user.userID}`,
       { cart: [...user.cart, product.id] }
     );
     if (status === 200) {

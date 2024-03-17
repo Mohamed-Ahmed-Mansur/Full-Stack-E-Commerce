@@ -13,7 +13,7 @@ export default function Shop() {
   const { category, subcategory } = useParams();
 
   const fetchCategories = async () => {
-    await axios.get('http://localhost:3001/category').then((res) => {
+    await axios.get('https://backend-last-v.onrender.com/category').then((res) => {
       const categoryNames = res.data.map((cat) => cat.category);
       setCategories(categoryNames);
     });
@@ -27,11 +27,11 @@ export default function Shop() {
         let url;
   
         if (subcategory) {
-          url = `http://localhost:3001/products/${category}/${subcategory}`;
+          url = `https://backend-last-v.onrender.com/products/${category}/${subcategory}`;
         } else if (currCat) {
-          url = `http://localhost:3001/products/findByCategory/category/${currCat}`;
+          url = `https://backend-last-v.onrender.com/products/findByCategory/category/${currCat}`;
         } else {
-          url = 'http://localhost:3001/products';
+          url = 'https://backend-last-v.onrender.com/products';
         }
         await axios.get(url).then((res) => {
           setData(res.data);

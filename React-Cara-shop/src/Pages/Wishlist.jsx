@@ -23,7 +23,7 @@ export default function Wishlist() {
     if (user?.wishlist?.includes(product.id)) {
       const updatedWishList = user?.wishlist.filter((id) => id !== product.id);
       const { status } = await axios.patch(
-        `http://localhost:3001/user/${user.userID}`,
+        `https://backend-last-v.onrender.com/user/${user.userID}`,
         { wishlist: updatedWishList }
       );
       if (status === 200) {
@@ -43,7 +43,7 @@ export default function Wishlist() {
       }
     }
     const { status } = await axios.patch(
-      `http://localhost:3001/user/${user.userID}`,
+      `https://backend-last-v.onrender.com/user/${user.userID}`,
       { wishlist: [...user?.wishlist, product.id] }
     );
     if (status === 200) {
@@ -69,7 +69,7 @@ export default function Wishlist() {
       return toast.warning("Please Log in First");
     }
     const { status } = await axios.patch(
-      `http://localhost:3001/user/${user.userID}`,
+      `https://backend-last-v.onrender.com/user/${user.userID}`,
       { cart: [...user.cart, product.id] }
     );
     if (status === 200) {
@@ -102,7 +102,7 @@ export default function Wishlist() {
       async function getProduct() {
         const productPromises = user.wishlist.map(async (id) => {
           const { data } = await axios.get(
-            "http://localhost:3001/products/" + id
+            "https://backend-last-v.onrender.com/products/" + id
           );
           return data;
         });

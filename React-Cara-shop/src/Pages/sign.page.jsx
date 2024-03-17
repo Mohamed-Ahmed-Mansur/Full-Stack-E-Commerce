@@ -11,7 +11,6 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router-dom";
-import Facebook from "../Components/login/facebook";
 import Google from "../Components/login/google";
 
 function SignIn() {
@@ -45,7 +44,7 @@ function SignIn() {
       const {
         data: { message },
       } = await axios.post(
-        "http://localhost:3001/user/log",
+        "https://backend-last-v.onrender.com/user/log",
         { email: formData.email, password: formData.password },
         { withCredentials: true }
       );
@@ -171,9 +170,9 @@ function SignIn() {
               </MDBBtn>
 
               <hr className="my-4" />
+              <p>or sign in with</p>
               <div className="d-flex gap-4">
                 <Google className="" />
-                <Facebook />
               </div>
             </MDBCardBody>
           </MDBCard>

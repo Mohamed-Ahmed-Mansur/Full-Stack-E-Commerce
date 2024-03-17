@@ -167,7 +167,7 @@ const VerfiySellerLogin = () => {
     if (code && isInputWritten) {
       await axios
         .post(
-          "http://localhost:3001/user/verify",
+          "https://backend-last-v.onrender.com/user/verify",
           {
             email: SignUpEmail,
             code: +code,
@@ -196,7 +196,7 @@ const VerfiySellerLogin = () => {
 
   const handleResendCode = () => {
     axios
-      .post("http://localhost:3001/user/forgetPass", { email: SignUpEmail })
+      .post("https://backend-last-v.onrender.com/user/forgetPass", { email: SignUpEmail })
       .then((response) => {
         toast.success(response.data.message);
       })

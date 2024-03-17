@@ -10,7 +10,7 @@ export const getUserAction = createAsyncThunk(
     let JWT = cookies.get("x-auth-token");
 
     const { data } = await axios.get(
-      `http://localhost:3001/user/${jwtDecode(JWT).user.userID}`
+      `https://backend-last-v.onrender.com/user/${jwtDecode(JWT).user.userID}`
     );
     return data[0];
   }

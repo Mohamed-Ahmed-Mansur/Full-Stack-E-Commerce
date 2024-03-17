@@ -6,7 +6,7 @@ export const getProductAction = createAsyncThunk(
   async (id) => {
 
     const { data } = await axios.get(
-      `http://localhost:3001/products/${id}`
+      `https://backend-last-v.onrender.com/products/${id}`
     );
     return data[0];
   }

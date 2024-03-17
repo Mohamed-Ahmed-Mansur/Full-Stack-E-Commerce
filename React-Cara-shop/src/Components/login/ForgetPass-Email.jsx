@@ -33,7 +33,7 @@ function ForgetPassEmail() {
       return;
     }
     await axios
-      .post("http://localhost:3001/user/forgetPassEmail", { email })
+      .post("https://backend-last-v.onrender.com/user/forgetPassEmail", { email })
       .then((res) => {
         if (res.data.message === "Email Sent") {
           dispatch(setSignUpEmail(email));

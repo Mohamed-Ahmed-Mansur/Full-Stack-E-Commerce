@@ -166,7 +166,7 @@ const UpdatePassCode = () => {
     const code = verificationCode.join("");
     if (code && isInputWritten) {
       axios
-        .post("http://localhost:3001/user/verify", {
+        .post("https://backend-last-v.onrender.com/user/verify", {
           email: SignUpEmail,
           code: +code,
         })
@@ -192,7 +192,7 @@ const UpdatePassCode = () => {
 
   const handleResendCode = () => {
     axios
-      .post("http://localhost:3001/user/forgetPass", { email: SignUpEmail })
+      .post("https://backend-last-v.onrender.com/user/forgetPass", { email: SignUpEmail })
       .then((response) => {
         toast.success(response.data.message);
       })

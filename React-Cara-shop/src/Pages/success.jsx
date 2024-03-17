@@ -42,7 +42,7 @@ const Success = () => {
       async function setOrders() {
         const cartData = JSON.parse(sessionStorage.getItem('cartData'));
         const { status } = await axios.post(
-          `http://localhost:3001/orders`,
+          `https://backend-last-v.onrender.com/orders`,
           {
             userID: user.userID,
             userEmail: user.email,
@@ -60,7 +60,7 @@ const Success = () => {
         );
         if(status === 201) {
           await axios.patch(
-            `http://localhost:3001/user/${user.userID}`,
+            `https://backend-last-v.onrender.com/user/${user.userID}`,
             { cart: [] }
           );
         }

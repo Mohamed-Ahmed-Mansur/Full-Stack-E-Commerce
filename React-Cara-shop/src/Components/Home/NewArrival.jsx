@@ -10,14 +10,14 @@ export default memo(function NewArrival() {
   useEffect(() => {
     async function getData() {
       try {
-        const productsResponse = await fetch("http://localhost:3001/products");
+        const productsResponse = await fetch("https://backend-last-v.onrender.com/products");
         const productsData = await productsResponse.json();
   
         // Select the first 8 products
         const selectedProducts = productsData.slice(0, 8);
   
         // Fetch details for each selected product concurrently using Promise.all()
-        const productDetailPromises = selectedProducts.map(product => fetch(`http://localhost:3001/products/${product.id}`).then(res => res.json()));
+        const productDetailPromises = selectedProducts.map(product => fetch(`https://backend-last-v.onrender.com/products/${product.id}`).then(res => res.json()));
   
         // Wait for all requests to complete
         const productDetails = await Promise.all(productDetailPromises);

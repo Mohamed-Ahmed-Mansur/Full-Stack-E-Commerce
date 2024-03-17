@@ -31,7 +31,7 @@ const Form = () => {
         password: '123456789Aa'
       };
 
-      const response = await axios.post("http://localhost:3001/user/reg", formData);
+      const response = await axios.post("https://backend-last-v.onrender.com/user/reg", formData);
       
       console.log(response.data); 
       enqueueSnackbar('admin added successfully',{ variant }); 

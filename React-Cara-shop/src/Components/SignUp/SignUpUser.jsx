@@ -108,7 +108,7 @@ const SignUpUser = () => {
 
   const handleRegister = async () => {
     axios
-      .post("http://localhost:3001/user/reg", {
+      .post("https://backend-last-v.onrender.com/user/reg", {
         ...DataSeller,
         isAdmin: false,
         isSeller: false,

@@ -86,7 +86,7 @@ function UpdatePassForm() {
 
     try {
       const res = await axios.post(
-        "http://localhost:3001/user/updatePass",
+        "https://backend-last-v.onrender.com/user/updatePass",
         {
           email: SignUpEmail,
           password,

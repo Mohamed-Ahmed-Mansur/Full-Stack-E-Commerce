@@ -102,7 +102,7 @@
 
 .dropdown-item.active,
 .dropdown-item:active {
-  background-color: #1a202c !important;
+  background-color: whitesmoke !important;
 }
 #signUpNav .dropdown-item:focus,
 #signUpNav .dropdown-item:hover {

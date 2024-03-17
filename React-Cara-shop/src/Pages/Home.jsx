@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react';
+import ImgBanner3 from '../Components/Home/imgBanner3';
 
 const Navbar = lazy(() => import('../Components/Home/Navbar'));
 const Landing = lazy(() => import('../Components/Home/Landing'));
@@ -26,7 +27,7 @@ const Home = () => {
           <Featured />
         </section>
         <section>
-          <ImgBanner />
+          <ImgBanner3 />
         </section>
         <section>
           <NewArrival />
@@ -35,6 +36,7 @@ const Home = () => {
           <Statistics />
         </section>
         <section>
+          <ImgBanner />
           <ImgBanner2 />
         </section>
         <section>

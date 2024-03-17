@@ -6,11 +6,12 @@ const SmBannerSection = styled.section`
 `;
 
 const BannerBox = styled.div`
+  position: relative; /* Add position relative */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  background-image: url('assets/img/banner/b17.WebP');
+  background-image: url('assets/img/banner/b10.WebP');
   height: 300px;
   background-size: cover;
   background-position: center;
@@ -19,7 +20,21 @@ const BannerBox = styled.div`
 `;
 
 const BannerBox2 = styled(BannerBox)`
-  background-image: url('assets/img/banner/b10.WebP');
+  background-image: url('assets/img/banner/b21.WebP');
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px;
 `;
 
 const BannerH4 = styled.h4`
@@ -66,10 +81,12 @@ const ImgBanner = () => {
         </div>
         <div className='col-lg-6 col-md-6 col-sm-12'>
           <BannerBox2>
-            <BannerH4>Spring/Summer</BannerH4>
-            <BannerH2>Upcoming Season</BannerH2>
-            <BannerSpan>The best classic dress is on sale at Cara</BannerSpan>
-            <HoverButton>Collection</HoverButton>
+            <Overlay>
+              <BannerH4>Spring/Summer</BannerH4>
+              <BannerH2>Upcoming Season</BannerH2>
+              <BannerSpan>The best classic dress is on sale at Cara</BannerSpan>
+              <HoverButton>Collection</HoverButton>
+            </Overlay>
           </BannerBox2>
         </div>
       </div>

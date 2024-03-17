@@ -29,7 +29,7 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: flex-start;
-background-image: url('assets/img/banner/b18.WebP');  /* Replace with your actual image path */
+background-image: url('assets/img/banner/b22.WebP');  /* Replace with your actual image path */
 min-width: 30%;
 height: 30vh;
 background-size: cover;
@@ -43,7 +43,7 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: flex-start;
-background-image: url('assets/img/banner/b7.WebP');  /* Replace with your actual image path */
+background-image: url('assets/img/banner/b23.WebP');  /* Replace with your actual image path */
 min-width: 30%;
 height: 30vh;
 background-size: cover;
@@ -57,7 +57,7 @@ const BannerBox3 = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  background-image: url('assets/img/banner/b4.WebP');  /* Replace with your actual image path */
+  background-image: url('assets/img/banner/b24.WebP');  /* Replace with your actual image path */
   min-width: 30%;
   height: 30vh;
   background-size: cover;

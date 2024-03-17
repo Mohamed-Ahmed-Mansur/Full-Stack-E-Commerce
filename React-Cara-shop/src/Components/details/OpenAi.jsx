@@ -43,7 +43,7 @@ export default memo(function OpenAi({ reviews, user, JWT, prodID }) {
     
             try {
               const response = await axios.post(
-                'http://localhost:3001/comments',
+                'https://backend-last-v.onrender.com/comments',
                 {
                   productID: prodID,
                   status: 'negative',

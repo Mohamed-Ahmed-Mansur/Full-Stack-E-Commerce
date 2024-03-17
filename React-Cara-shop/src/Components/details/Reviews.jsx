@@ -132,7 +132,7 @@ const Reviews = () => {
   }, [prodetails]);
   async function getProduct() {
     try {
-      await axios.get(`http://localhost:3001/products/${prodetails.id}`);
+      await axios.get(`https://backend-last-v.onrender.com/${prodetails.id}`);
     } catch (error) {
       console.error("Error fetching product:", error);
     }
@@ -161,7 +161,7 @@ const Reviews = () => {
         setReviews([...reviews, newComment]);
         await axios
           .patch(
-            `http://localhost:3001/products/${prodetails.id}`,
+            `https://backend-last-v.onrender.com/${prodetails.id}`,
             { comments: [...prodetails?.comments, newComment] },
             header
           )
@@ -178,7 +178,7 @@ const Reviews = () => {
   };
   async function getPurchasedProducts() {
     await axios
-      .get(`http://localhost:3001/orders/userID/${user.userID}`)
+      .get(`https://backend-last-v.onrender.com/orders/userID/${user.userID}`)
       .then((response) => {
         setProductPurchased(response.data);
       });

@@ -11,7 +11,7 @@ export default function Orders({ userData }) {
   const fetchProduct = async (productID) => {
     try {
       const { data: product } = await axios.get(
-        `http://localhost:3001/products/${productID}`
+        `https://backend-last-v.onrender.com/products/${productID}`
       );
       return product;
     } catch (error) {
@@ -37,7 +37,7 @@ export default function Orders({ userData }) {
 
     const fetchOrders = async (userID) => {
       try {
-        const { data } = await axios.get(`http://localhost:3001/orders`);
+        const { data } = await axios.get(`https://backend-last-v.onrender.com/orders`);
         const userOrder = data.filter((order) => order.userID === userID);
         setUserOrders(userOrder);
         fetchFirstProductImages(userOrder);

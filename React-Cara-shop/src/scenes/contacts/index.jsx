@@ -73,7 +73,7 @@ const Contacts = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/orders");
+        const response = await fetch("https://backend-last-v.onrender.com/orders");
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

@@ -17,7 +17,7 @@ export default memo(function Categories({ categories, subcategory }) {
 
   const fetchSubCategories = async (category) => {
     try {
-      const response = await axios.get(`http://localhost:3001/category`);
+      const response = await axios.get(`https://backend-last-v.onrender.com/category`);
       const categoryData = response.data.find(item => item.category === category);
       if (categoryData) {
         setSubCategories(categoryData.subCategories);

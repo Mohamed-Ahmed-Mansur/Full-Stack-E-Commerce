@@ -52,7 +52,7 @@ const updateseller = async (userID,variant) => {
       };
       console.log(JWT)
 
-      const response = await axios.patch(`http://localhost:3001/user/${userID}`, {
+      const response = await axios.patch(`https://backend-last-v.onrender.com/user/${userID}`, {
         admit: true,
      
     }, header);
@@ -84,7 +84,7 @@ const deleteseller = async (userID,variant)=>{
         };
   console.log(JWT)
   console.log(header)
-        const response = await axios.delete(`http://localhost:3001/user/${userID}`, header);
+        const response = await axios.delete(`https://backend-last-v.onrender.com/user/${userID}`, header);
   
         console.log('seller deleted successfully:', response.data);
         enqueueSnackbar('This is a success message!', { variant });
