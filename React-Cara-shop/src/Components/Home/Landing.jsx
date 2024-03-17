@@ -1,34 +1,26 @@
 import React, { memo } from 'react';
-import landingImg from '../../Assets/15.WebP';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default memo(function Landing() {
-
-  function handleImage() {
-    const src = localStorage.getItem('15');
-    if (src) {
-      return JSON.parse(src);
-    }
-    localStorage.setItem('15', JSON.stringify(landingImg));
-    return landingImg;
-  }
+  const [t, i18n] = useTranslation();
 
   return (
-    <div id='landing' className=" section-p1">
+    <div id='landing' className=" section-p1" dir={`${i18n.language}`==='en'?"ltr":"rtl"}>
       <div className="row align-items-center">
         <div className="col-md-6 col-sm-12 my-4">
-          <h4>Trade-in- offer</h4>
-          <h2>Super Value deals</h2>
-          <h1>On all products</h1>
-          <p>Save more width coupons & up to 70% off!</p>
+          <h4>{t('Trade-in offer')}</h4>
+          <h2>{t('Super Value deals')}</h2>
+          <h1>{t('On all products')}</h1>
+          <p>{t('Save more width coupons & up to 70% off!')}</p>
           <Link to="/shop">
             <button>
-              Shop Now
+            {t('Shop Now')}
             </button>
           </Link>
         </div>
         <div className="col-md-6 col-sm-12 d-flex justify-content-center">
-          <img className='w-50' src={handleImage()} alt="landingImage" />
+          <img className='w-50' src="assets/img/15.WebP" alt="landingImage" />
         </div>
       </div>
     </div>

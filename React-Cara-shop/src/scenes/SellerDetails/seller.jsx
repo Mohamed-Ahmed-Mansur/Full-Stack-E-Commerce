@@ -20,8 +20,7 @@ import ContactsIcon from "@mui/icons-material/Contacts";
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { jwtDecode } from "jwt-decode";
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 const Seller = () => {
   const location = useLocation();
   const [sellerData, setSellerData] = useState(null);

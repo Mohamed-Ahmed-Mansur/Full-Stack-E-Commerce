@@ -1,7 +1,9 @@
 import React, { memo, useEffect, useState } from 'react';
 import Card from '../Card';
+import { useTranslation } from 'react-i18next';
 
 export default memo(function NewArrival() {
+  const [t] = useTranslation();
 
   let [data1, setdata1] = useState([]);
   
@@ -32,8 +34,8 @@ export default memo(function NewArrival() {
   return (
     <section className="section-p1">
       <div className="row text-center mb-5">
-        <h2>New Arrivals</h2>
-        <p>Summer Collection New Modern Design</p>
+        <h2>{t('New Arrivals')}</h2>
+        <p>{t('Summer Collection New Modern Design')}</p>
       </div>
 
       <div className="row g-5 ">

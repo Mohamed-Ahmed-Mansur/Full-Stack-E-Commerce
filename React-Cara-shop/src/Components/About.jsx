@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 const Section = styled.section`
   background-image: url('assets/img/about/banner.png');
   width: 100%;
@@ -59,16 +61,32 @@ const Video = styled.video`
 `;
 
 const About = () => {
+
+  var myEvent = null;
+
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    myEvent = event;
+  });
+
+  async function handleApp() {
+    if (!myEvent) {
+      return;
+    }
+    await myEvent.prompt();
+    myEvent = null;
+  }
+
   return (
     <>
-      <Section className=" container-fluid  ">
+      <Section className="container-fluid">
         <Text className="row justify-content-evenly">
           <H2>#KnowUs</H2>
           <P>Lorem ipsum dolor sit amet consectetur</P>
         </Text>
       </Section>
 
-      <div className=" container-fluid my-4 ">
+      <div className="container-fluid my-4">
         <section className="row">
           <img
             className="col-md-6"
@@ -79,10 +97,27 @@ const About = () => {
             <div>
               <h2>Who We Are?</h2>
               <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi
-                nisi et maiores quos in, accusamus possimus dolores. Nobis enim,
-                nulla vel non placeat vitae qui corporis optio, porro assumenda
-                adipisci.
+                Our E-commerce platform is more than just a marketplace.
+                it's a reflection of our commitment to bringing convenience,
+                quality, and innovation to your doorstep. At{' '}
+                <span style={{ color: 'darkblue', fontSize: '1.5rem' }}>
+                  ForSa
+                </span>
+                , we believe in redefining the shopping experience by offering
+                a diverse range of products curated with meticulous attention
+                to detail. Whether you're seeking everyday essentials or
+                indulging in luxurious finds, we aim to cater to every need
+                and desire. Our team is driven by a passion for customer
+                satisfaction, ensuring that each interaction with our platform
+                is seamless and enjoyable. With a dedication to excellence, we
+                prioritize authenticity and transparency, fostering trust and
+                loyalty among our valued customers. Beyond providing
+                exceptional products, we strive to cultivate a community where
+                individuals can explore, discover, and connect. Welcome to{' '}
+                <span style={{ color: 'darkblue', fontSize: '1.5rem' }}>
+                  ForSa
+                </span>
+                . where shopping becomes an adventure, and every
               </p>
             </div>
           </div>
@@ -91,7 +126,7 @@ const About = () => {
 
       <AboutAppSection>
         <Title>
-          Download Our <a href="#">App</a>
+          Download Our <Link to="#" onClick={handleApp}>App</Link>
         </Title>
         <VideoWrapper>
           <Video autoPlay muted loop src="assets/img/about/1.mp4"></Video>

@@ -79,7 +79,7 @@ const Statistics = () => {
     <div ref={containerRef}>
       <Container style={{ color: `${textColor}` }}>
         <SubContainer>
-          <AnimatedNumber>+{value1}&nbsp;<b>Oreders</b></AnimatedNumber>
+          <AnimatedNumber>+{value1}&nbsp;<b>Orders</b></AnimatedNumber>
         </SubContainer>
         <SubContainer>
           <AnimatedNumber>+{value2}&nbsp;<b>Customers</b></AnimatedNumber>

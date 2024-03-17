@@ -5,6 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserAction } from "../Redux/Slice/User";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const user = useSelector((state) => state.user.user);
@@ -107,7 +108,6 @@ const Cart = () => {
     const stripe = await loadStripe(
       process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
     );
-    localStorage.removeItem("cart");
 
     const response = await axios.post(
       "http://localhost:3001/check-out/checkout",
@@ -118,9 +118,14 @@ const Cart = () => {
       }
     );
 
+    toast.loading("Redirecting...");
+
     const result = stripe.redirectToCheckout({
       sessionId: response.data.sessionId,
     });
+
+    // Store cartData in session storage
+    sessionStorage.setItem('cartData', JSON.stringify([products, total]));
 
     if (result.error) {
       console.log(result.error);
@@ -299,6 +304,7 @@ const Cart = () => {
                           border: '1px solid #088178',
                         }}
                         onClick={handleCoupon}
+                        disabled={total ? false : true}
                       >
                         Apply
                       </button>
@@ -334,6 +340,7 @@ const Cart = () => {
                     </tbody>
                   </table>
                   <button
+                    disabled={total ? false : true}
                     className="btn btn-primary btn-block"
                     style={{
                       backgroundColor: '#088178',

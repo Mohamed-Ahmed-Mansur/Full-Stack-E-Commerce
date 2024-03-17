@@ -1,10 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductAction } from "../../Redux/Slice/prodetails";
+import OpenAi from "./OpenAi";
 
 const RoundedShadowBox = styled.div`
   background: #f8f8f8;
@@ -94,71 +97,101 @@ const Star = styled.span`
   }
 `;
 
-const Reviews = ({ ProDetails }) => {
+const Reviews = () => {
+  const dispatch = useDispatch();
+  const prodetails = useSelector((state) => state.prodetails.prodetails);
+  const [rating, setRating] = useState(0); // Initial rating is 0
+  const [comment, setcomment] = useState("");
+  const [reviews, setReviews] = useState([]);
   const cookies = new Cookies();
+  let [productPurchased, setProductPurchased] = useState([]);
+
   const JWT = cookies.get("x-auth-token");
-  // console.log(JWT);
-  // console.log(jwtDecode(JWT));
+
   if (JWT) {
     var { user } = jwtDecode(JWT);
   }
-
-  // Ensure ProDetails and its reviews are defined before rendering
-  const [rating, setRating] = useState(0); // Initial rating is 0
-  const [comment, setcomment] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [reviews, setReviews] = useState([]);
-
-  //for first load
-  useEffect(() => {
-    setReviews(ProDetails.comments || []);
-  }, [ProDetails]);
-
-  useEffect(() => {
-    // Update reviews whenever ProDetails changes
-    if (ProDetails && ProDetails.comments) {
-      setReviews(ProDetails.comments);
-    }
-  }, [ProDetails]);
-
-  const handleComment = (e) => {
-    setcomment(e.target.value);
+  const header = {
+    headers: {
+      "x-auth-token": JWT,
+    },
   };
 
-  const handleSubmit = (e) => {
+  const newComment = {
+    ratings: rating,
+    userName: user?.name,
+    Comment: comment,
+    userEmail: user?.email,
+    userID: user?.userID,
+  };
+
+  useEffect(() => {
+    if (prodetails && prodetails.comments) {
+      setReviews(prodetails.comments);
+    }
+  }, [prodetails]);
+  async function getProduct() {
+    try {
+      await axios.get(`http://localhost:3001/products/${prodetails.id}`);
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  }
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
+    if (!JWT) {
+      toast.warning("Please Log in First!");
+    } else if (productPurchased) {
+      const purchasedProductIDs = productPurchased.map(
+        (product) => product.productID
+      );
 
-    // Set submitted to true to render a different UI if needed
-    if (JWT && comment) {
-      setSubmitted(true);
-      Swal.fire({
-        title: "Thank you!",
-        text: "Your comment has been submitted.",
-        icon: "success",
-      });
+      let map2 = purchasedProductIDs.map((pro) => pro.includes(prodetails.id));
+      let filterForTrue = map2.find((pro) => pro === true);
+      if (!filterForTrue) {
+        toast.warning(
+          "You need to purchase the product so you can comment and rate it "
+        );
+        return;
+      } else {
+        if (!comment.trim()) {
+          toast.warning("Please enter a comment before submitting!");
+          return; // Prevent the form from submitting
+        }
+        setReviews([...reviews, newComment]);
+        await axios
+          .patch(
+            `http://localhost:3001/products/${prodetails.id}`,
+            { comments: [...prodetails?.comments, newComment] },
+            header
+          )
+          .then((response) => {
+            if (response && response.status === 200) {
+              setcomment("");
+              toast.success(`Your review has been submitted successfully!`);
+              getProduct();
+              dispatch(getProductAction(prodetails.id));
+            }
+          });
+      }
     }
   };
+  async function getPurchasedProducts() {
+    await axios
+      .get(`http://localhost:3001/orders/userID/${user.userID}`)
+      .then((response) => {
+        setProductPurchased(response.data);
+      });
+  } //to affect db once add comment without need refresh
+  useEffect(() => {
+    if (JWT && prodetails) {
+      getProduct();
+      getPurchasedProducts();
+    }
+  }, [JWT, prodetails, reviews]);
 
   const handleRating = (selectedRating) => {
-    // Set the selected rating
-    setRating(selectedRating);
-  };
-
-  const addReview = () => {
-    if (JWT && comment) {
-      const newReview = {
-        ratings: rating,
-        userName: user.name,
-        Comment: comment,
-        userEmail: user.email,
-        userID: user.userID,
-      };
-      setReviews([...reviews, newReview]);
-    } else if (!comment) {
-      toast.warning("Please add Your comment");
-    } else {
-      toast.warning("Please Log in First!");
-    }
+    setRating(selectedRating === rating ? rating - 1 : selectedRating);
   };
 
   //for avatar letters
@@ -167,23 +200,6 @@ const Reviews = ({ ProDetails }) => {
     return `${firstInitial}`;
   };
 
-  useEffect(() => {
-
-    if (JWT) {
-      const header = {
-        headers: {
-          "x-auth-token": JWT,
-        },
-      };
-      axios
-        .patch(
-          `http://localhost:3001/products/${ProDetails.id}`,
-          { comments: reviews },
-          header
-        );
-    }
-  }, [reviews, JWT, ProDetails.id]);
-
   return (
     <div className="container mt-5">
       <h5 className="mb-5 fs-4">All Ratings and Reviews</h5>
@@ -191,8 +207,8 @@ const Reviews = ({ ProDetails }) => {
       {reviews.length === 0 ? (
         <p>No comments yet.</p>
       ) : (
-        reviews.map((review) => (
-          <RoundedShadowBox key={review.userID}>
+        reviews.map((review, index) => (
+          <RoundedShadowBox key={index}>
             <>
               <ReviewsMembers key={review.userID}>
                 <Media>
@@ -208,7 +224,7 @@ const Reviews = ({ ProDetails }) => {
                             margin: "5px",
                           }}
                         >
-                          ★{review.ratings}.0
+                          ★{review.ratings}/5
                         </Star>
                       </h6>
                     </ReviewsMembersHeader>
@@ -223,36 +239,34 @@ const Reviews = ({ ProDetails }) => {
         ))
       )}
 
-      {submitted ? (
-        <div>{/* alret will accure */}</div>
-      ) : (
-        <LeaveCommentBox>
-          <p>Rate the ProDetails</p>
+      <LeaveCommentBox>
+        <p>Rate the prodetails</p>
+        <div>
+          {[1, 2, 3, 4, 5].map((index) => (
+            <Star key={index} onClick={() => handleRating(index)}>
+              {index <= rating ? "★" : "☆"}
+            </Star>
+          ))}
+        </div>
+        <form onSubmit={handleCommentSubmit}>
           <div>
-            {/* Star rating */}
-            {[1, 2, 3, 4, 5].map((index) => (
-              <Star key={index} onClick={() => handleRating(index)}>
-                {index <= rating ? "★" : "☆"}
-              </Star>
-            ))}
+            <label>Your Comment</label>
+            {/* <CommentTextArea value={comment} onChange={handleComment} /> */}
+            <CommentTextArea
+              value={comment}
+              onChange={(e) => {
+                setcomment(e.target.value);
+              }}
+            />
           </div>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>Your Comment</label>
-              <CommentTextArea onChange={handleComment} />
-            </div>
-            <div>
-              <SubmitButton
-                type="sumbit"
-                onClick={addReview}
-                className=" btn-sm"
-              >
-                Submit Comment
-              </SubmitButton>
-            </div>
-          </form>
-        </LeaveCommentBox>
-      )}
+          <div>
+            <SubmitButton type="sumbit" className=" btn-sm">
+              Submit Comment
+            </SubmitButton>
+          </div>
+        </form>
+      </LeaveCommentBox>
+      <OpenAi reviews={reviews} user={user} JWT={JWT} prodID={prodetails?.id}></OpenAi>
     </div>
   );
 };

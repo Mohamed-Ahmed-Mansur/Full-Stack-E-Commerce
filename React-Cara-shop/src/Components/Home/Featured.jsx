@@ -4,8 +4,10 @@ import '@splidejs/splide/dist/css/splide.min.css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default memo(function Featured() {
+  const [t] = useTranslation();
 
   let [data1, setdata1] = useState([]);
   
@@ -17,8 +19,10 @@ export default memo(function Featured() {
         ordersData.reverse();
   
         const productIds = ordersData.flatMap(prd => prd.productID);
+        let uniqueProductIDs = new Set(productIds);
+        uniqueProductIDs = [...uniqueProductIDs];
   
-        const productRequests = productIds.map(async (productId) => {
+        const productRequests = uniqueProductIDs.map(async (productId) => {
           const productResponse = await fetch(`http://localhost:3001/products/${productId}`);
           return productResponse.json();
         });
@@ -36,8 +40,8 @@ export default memo(function Featured() {
   return (
     <div id="featured" className='my-5'>
       <div className="text-center mb-5">
-        <h2>Featured Products</h2>
-        <p>Summer Collection New Modern Design</p>
+        <h2>{t('Featured Products')}</h2>
+        <p>{t('Summer Collection New Modern Design')}</p>
       </div>
 
       <div className="g-5">

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import prdImg from "../../Assets/img/products/f2.jpg";
 import axios from "axios";
-import Reviews from "./Reviews";
+import { useDispatch, useSelector } from "react-redux";
+import prodetails, { setProdetails } from "../../Redux/Slice/prodetails";
+import { toast } from "react-toastify";
+import { getUserAction } from "../../Redux/Slice/User";
 
 const ProDetailsSection = styled.section`
   display: flex;
@@ -42,22 +44,22 @@ const SingleProDetails = styled.div`
 
   h6 {
     margin-bottom: 10px;
-    font-size: 20px;
+    font-size: 18px;
   }
 
   h4 {
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 10px;
   }
 
   h2 {
-    font-size: 36px;
+    font-size: 25px;
     color: #088178;
     margin-bottom: 20px;
     margin-top: 20px;
   }
   h3 {
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 600;
     margin-bottom: 20px;
   }
@@ -94,72 +96,106 @@ const SingleProDetails = styled.div`
   }
 
   h4 {
-    font-size: 25px;
+    font-size: 20px;
     margin-top: 20px;
   }
 
   span {
-    font-size: 18px;
+    font-size: 15px;
   }
 `;
 const Details = () => {
   const { ProductId } = useParams();
-  // console.log(ProductId)
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user.user);
+
   const [ProDetails, setProDetails] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3001/products/${ProductId}`)
-      .then((response) => {
-        setProDetails(response.data);
+  async function handleCart(product, e) {
+    e.stopPropagation();
+    if (!user) {
+      return toast.warning("Please Log in First");
+    }
+    const { status } = await axios.patch(
+      `http://localhost:3001/user/${user.userID}`,
+      { cart: [...user.cart, product.id] }
+    );
+    if (status === 200) {
+      toast.success("Added to Cart Successfully", {
+        position: "bottom-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        className: "custom-toast",
+        bodyClassName: "toast-body",
+        toastClassName: "toast-container",
       });
-  }, [ProductId]);
+      dispatch(getUserAction());
+    }
+  }
+
+  useEffect(() => {
+    const getProDetails = async () => {
+      await axios
+        .get(`http://localhost:3001/products/${ProductId}`)
+        .then((response) => {
+          setProDetails(response.data);
+          // console.log( response.data)
+          dispatch(setProdetails(response.data))
+        });
+    };
+    getProDetails();
+  }, [ProductId, dispatch]);
 
   return (
     <div className="container">
       <ProDetailsSection className="section-p1">
-        <SingleProImage>
-          <img
-            src={
-              ProDetails.images && ProDetails.images.length > 0
-                ? ProDetails.images[0]
-                : prdImg
-            }
-            alt="Main Product"
-          />
-          <div className="small-img-group">
-            <div className="small-img-col">
+       
+        <SingleProImage className="text-center overflow-hidden">
+          {ProDetails.images && ProDetails.images.length > 0 ? (
+              <div
+              style={{
+                height: '200px',
+                overflow: 'hidden',
+                borderRadius: '20px',
+              }}
+            >
               <img
-                src={
-                  ProDetails.images && ProDetails.images.length > 0
-                    ? ProDetails.images[1]
-                    : prdImg
-                }
+                style={{ objectFit: 'contain', height: '100%', width: 'auto' }}
+                src={ProDetails.images[0]}
                 alt="Main Product"
               />
             </div>
-            <div className="small-img-col">
-              <img
-                src={
-                  ProDetails.images && ProDetails.images.length > 0
-                    ? ProDetails.images[2]
-                    : prdImg
-                }
-                alt="Main Product"
-              />
+            ) : (
+              <img src="assets/img/products/f2.jpg" alt="Main Product" />
+            )}
+            <div className="small-img-group">
+              {ProDetails.images &&
+                ProDetails.images.map((image, index) => (
+                  <div className="small-img-col" key={index}>
+                    <div
+                    style={{
+                      height: '150px',
+                      overflow: 'hidden',
+                      borderRadius: '20px',
+                    }}
+                  >
+                    <img
+                      style={{
+                        objectFit: 'contain',
+                        height: '100%',
+                        width: '100%',
+                      }}
+                      src={ProDetails.images[index]}
+                      alt="sub Product"
+                    />
+                  </div>
+                  </div>
+                ))}
             </div>
-
-            <div className="small-img-col">
-              <img
-                src={
-                  ProDetails.images && ProDetails.images.length > 0
-                    ? ProDetails.images[0]
-                    : prdImg
-                }
-                alt="Main Product"
-              />
-            </div>
-          </div>
         </SingleProImage>
 
         <SingleProDetails>
@@ -171,15 +207,24 @@ const Details = () => {
               ? ProDetails.price.toFixed(2)
               : "Price not available"}
           </h2>
-          <button className="normal">Add To Cart</button>
+
+          {/* <input
+            type="number"
+            value={quantity}
+            min="1"
+            onChange={handleQuantityChange}
+          /> */}
+          <button className="normal" onClick={(e)=> handleCart(prodetails, e)}>Add To Cart</button>
           <h4>Product Details:</h4>
           <span>{ProDetails.description}</span>
         </SingleProDetails>
       </ProDetailsSection>
 
-      <Reviews ProDetails={ProDetails}></Reviews>
+   
     </div>
   );
 };
 
 export default Details;
+
+

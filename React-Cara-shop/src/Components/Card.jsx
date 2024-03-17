@@ -1,5 +1,4 @@
 import React, { memo, useCallback } from "react";
-import prdImg from "../Assets/img/products/f1.jpg";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -120,7 +119,7 @@ export default memo(function Card({ product }) {
           src={
             product.images && product.images.length > 0
               ? product.images[0]
-              : prdImg
+              : '../../public/assets/img/'
           }
           alt="productImg"
           className="w-100"

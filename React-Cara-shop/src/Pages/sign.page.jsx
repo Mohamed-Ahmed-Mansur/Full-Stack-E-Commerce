@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState, useCallback } from "react";
 import {
   MDBBtn,
   MDBContainer,
@@ -25,89 +25,81 @@ function SignIn() {
     email: "",
     password: "",
   });
-  const { email, password } = formData;
-
-  let [flag, setFlag] = useState(false);
-  let [sellerFlag, setSellerFlag] = useState(false);
+  const [flag, setFlag] = useState(false);
+  const [sellerFlag, setSellerFlag] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  async function handleSubmit(e) {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    if (!email.trim()) {
+    if (!formData.email.trim()) {
       setErrors({ ...errors, email: "Please enter your email." });
       return;
     }
-    if (!password.trim()) {
+    if (!formData.password.trim()) {
       setErrors({ ...errors, password: "Please enter your password." });
       return;
     }
 
-    const {
-      data: { message },
-    } = await axios.post(
-      "http://localhost:3001/user/log",
-      { email, password },
-      { withCredentials: true }
-    );
+    try {
+      const {
+        data: { message },
+      } = await axios.post(
+        "http://localhost:3001/user/log",
+        { email: formData.email, password: formData.password },
+        { withCredentials: true }
+      );
 
-    if (message === "Logged-In Successfully") {
-      navigate("/");
-    } else if (message === "Invalid Email Or Password !!") {
-      toast.error(message);
-    } else if (message === "Please verify your account") {
-      setFlag(true);
-    } else if (
-      message ===
-      "Your application is still in review and once it's verfied you will be noticed over email"
-    ) {
-      setSellerFlag(true);
-    } else {
-      console.log(message);
+      if (message === "Logged-In Successfully") {
+        navigate("/");
+      } else if (message === "Invalid Email Or Password !!") {
+        toast.error(message);
+      } else if (message === "Please verify your account") {
+        setFlag(true);
+      } else if (
+        message ===
+        "Your application is still in review and once it's verified you will be notified over email"
+      ) {
+        setSellerFlag(true);
+      } else {
+        console.log(message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
-  }
+  }, [formData, errors, navigate]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
-    });
+    }));
 
-    setErrors({
-      ...errors,
+    setErrors((prevErrors) => ({
+      ...prevErrors,
       [name]: "",
-    });
-  };
+    }));
+  }, []);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  const togglePasswordVisibility = useCallback(() => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  }, []);
 
   return (
     <MDBContainer fluid className="mt-4">
       <MDBRow className="d-flex justify-content-center align-items-center h-100">
         <MDBCol col="12">
-          <MDBCard
-            className="bg-white my-5 mx-auto"
-            style={{ borderRadius: "1rem", maxWidth: "500px" }}
-          >
+          <MDBCard className="bg-white my-5 mx-auto" style={{ borderRadius: "1rem", maxWidth: "500px" }}>
             <MDBCardBody className="p-5 d-flex flex-column align-items-center">
               <div className="d-flex align-items-center mb-4">
-                <h2 style={{ color: " #088178" }} className="fw-bold mb-0 m-2">
-                  Welcome to
+                <h2 style={{ color: "#088178" }} className="fw-bold mb-0 m-2">
+                  Welcome to <span style={{ color: "darkmagenta", fontSize: "3rem" }}>ForSa</span>
                 </h2>
-                <img
-                  className="w-90"
-                  src="../../Assets/img/logo.png"
-                  alt="logo"
-                />
               </div>
               <h2 className="fw-bold mb-2">Sign in now !</h2>
-              <p className="text-white-50 mb-3">
-                Please enter your login and password!
-              </p>
+              <p className="text-white-50 mb-3">Please enter your login and password!</p>
 
               <MDBInput
                 wrapperClass="mb-4 w-100"
@@ -116,7 +108,7 @@ function SignIn() {
                 type="email"
                 size="lg"
                 name="email"
-                value={email}
+                value={formData.email}
                 onChange={handleInputChange}
               />
               {errors.email && <p className="text-danger">{errors.email}</p>}
@@ -128,13 +120,11 @@ function SignIn() {
                 type={showPassword ? "text" : "password"}
                 size="lg"
                 name="password"
-                value={password}
+                value={formData.password}
                 onChange={handleInputChange}
               >
                 <i
-                  className={`bi bi-eye${
-                    showPassword ? "-slash" : ""
-                  } position-absolute top-50  translate-middle-y`}
+                  className={`bi bi-eye${showPassword ? "-slash" : ""} position-absolute top-50  translate-middle-y`}
                   onClick={togglePasswordVisibility}
                   style={{
                     height: "30px",
@@ -148,16 +138,13 @@ function SignIn() {
                   }}
                 ></i>
               </MDBInput>
-              {errors.password && (
-                <p className="text-danger">{errors.password}</p>
-              )}
+              {errors.password && <p className="text-danger">{errors.password}</p>}
 
               <div className="d-flex justify-content-between align-items-center mb-4 w-100">
                 <NavLink
-                  style={{ color: " #088178", textDecoration: "none" }}
+                  style={{ color: "#088178", textDecoration: "none" }}
                   to="/forgetPassEmail"
                   className="text-decoration-none"
-                  // Inline style for hover effect
                   onMouseOver={(e) => (e.target.style.color = "blue")}
                   onMouseOut={(e) => (e.target.style.color = "#088178")}
                 >
@@ -176,14 +163,10 @@ function SignIn() {
               )}
               {sellerFlag && (
                 <p style={{ color: "green" }}>
-                  Your application is still in review and once it's verfied you will be noticed over email
+                  Your application is still in review and once it's verified you will be notified over email
                 </p>
               )}
-              <MDBBtn
-                size="lg"
-                onClick={handleSubmit}
-                style={{ backgroundColor: " #088178" }}
-              >
+              <MDBBtn size="lg" onClick={handleSubmit} style={{ backgroundColor: "#088178" }}>
                 Login
               </MDBBtn>
 
@@ -200,4 +183,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default memo(SignIn);

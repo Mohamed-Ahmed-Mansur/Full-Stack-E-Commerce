@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const Section = styled.section`
   overflow-x: hidden;
@@ -59,20 +60,22 @@ const Button = styled.button`
 `;
 
 const Newsletter = () => {
+  const [t, i18n] = useTranslation();
+
   return (
-    <Section  className=" container-fluid  ">
+    <Section  className=" container-fluid  " dir={`${i18n.language}`==='en'?"ltr":"rtl"}>
       <div className="row justify-content-evenly">
         <NewsText className="col-md-5 col-xsm-12">
-          <H4>Sign Up For Newsletter</H4>
+          <H4>{t('Sign Up For Newsletter')}</H4>
           <P >
-            Get E-mail updates about our latest shop and <span style={{ color: '#ffbd27' }}>special offers.</span>
+          {t('Get E-mail updates about our latest shop and')} <span style={{ color: '#ffbd27' }}>{t('special offers.')}</span>
           </P>
         </NewsText>
         <form className="col-md-5 col-xsm-12 d-flex mx-5">
-          <Input type="text" placeholder="Your email address" />
+          <Input type="text" placeholder={t('Your email address')} />
           <Link to="/signup">
             <Button>
-              Sign Up
+            {t('Sign up')}
             </Button>
           </Link>
         </form>

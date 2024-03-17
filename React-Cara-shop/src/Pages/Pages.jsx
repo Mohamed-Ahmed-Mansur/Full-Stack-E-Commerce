@@ -5,6 +5,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { ColorModeContext, useMode } from '../theme';
 import store from '../Redux/store';
 import styled from 'styled-components';
+import Success from './success';
 
 const Home = React.lazy(() => import('./Home'));
 const Shop = React.lazy(() => import('./Shop'));
@@ -115,6 +116,7 @@ const Pages = () => {
             <Route path="/signupSeller" element={<SignUpSeller />} />
             <Route path="/user/reg" element={<VerfiySeller />} />
             <Route path="/Message" element={<Message />} />
+            <Route path="/success" element={<Success />} />
             {/* Additional routes */}
             <Route
                 path="/updatePassForm"

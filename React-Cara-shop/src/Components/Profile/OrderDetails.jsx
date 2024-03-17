@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { getUserAction } from '../../Redux/Slice/User';
 
 export default function OrderDetails() {
+  const user = useSelector(state => state.user.user);
+  const dispatch = useDispatch();
   const location = useLocation();
   const [allProduct, setAllProduct] = useState(null);
 
@@ -17,50 +22,57 @@ export default function OrderDetails() {
     }
   };
 
-  const fetchProductsForOrders = async (product) => {
-    // console.log(product);
-    try {
-      const productsPromises = product?.map(async (order) => {
-        // Fetch product details for each order
-        const productData = await fetchProduct(order);
-        return productData;
-      });
-      // console.log(productsPromises);
-      const products = await Promise.all(productsPromises);
-      // Return the products array
-      setAllProduct(products);
-      return products;
-    } catch (error) {
-      console.error('Error fetching products for orders:', error);
-      // Return an empty array in case of error
-      return [];
+  async function handleCart(product) {
+    if (!user) {
+      return toast.warning("Please Log in First");
     }
-  };
+    const { status } = await axios.patch(
+      `http://localhost:3001/user/${user.userID}`,
+      { cart: [...user.cart, product.id] }
+    );
+    if (status === 200) {
+      toast.success("Added to Cart Successfully", {
+        position: "bottom-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        className: "custom-toast",
+        bodyClassName: "toast-body",
+        toastClassName: "toast-container",
+      });
+      dispatch(getUserAction());
+    }
+  }
 
   useEffect(() => {
     // console.log(location)
     if (location.state && location.state.data) {
       // setProduct(location.state.data);
+      const fetchProductsForOrders = async (product) => {
+        // console.log(product);
+        try {
+          const productsPromises = product?.map(async (order) => {
+            // Fetch product details for each order
+            const productData = await fetchProduct(order);
+            return productData;
+          });
+          // console.log(productsPromises);
+          const products = await Promise.all(productsPromises);
+          // Return the products array
+          setAllProduct(products);
+          return products;
+        } catch (error) {
+          console.error('Error fetching products for orders:', error);
+          // Return an empty array in case of error
+          return [];
+        }
+      };
       fetchProductsForOrders(location.state.data.productID);
     }
   }, [location]);
-
-  const products = [
-    {
-      title: 'Cartoon Astronut T-Shirts',
-      price: '500',
-      brand: 'adidas',
-      rating: 2,
-      id: '43583594',
-    },
-    {
-      title: 'Blue Pants',
-      price: '400',
-      brand: 'Puma',
-      rating: 5,
-      id: '495834584',
-    },
-  ];
 
   const renderStars = (ratings) => {
     const stars = [];
@@ -115,9 +127,9 @@ export default function OrderDetails() {
                             }}
                             className="text-decoration-none"
                           >
-                            <h6 className="p-1" style={{ color: '#088178' }}>
+                            <button className="btn" style={{ color: '#088178' }} onClick={() => handleCart(product)}>
                               Buy Again
-                            </h6>
+                            </button>
                           </NavLink>
                         </div>
                       </div>

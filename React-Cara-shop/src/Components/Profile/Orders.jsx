@@ -92,12 +92,14 @@ export default function Orders({ userData }) {
                 <div id="profileCard">
                   <div className="d-flex" style={{ gap: '1.5rem' }}>
                     <div style={{ maxWidth: '120px' }}>
-                      <img
-                        src={`${orderProducts[i]}`}
-                        alt="productImg"
-                        className="w-100"
-                        style={{ borderRadius: '8px' }}
-                      />
+                      {orderProducts[i] ? <img
+                          src={`${orderProducts[i]}`}
+                          alt="productImg"
+                          className="w-100"
+                          style={{ borderRadius: '8px' }}
+                        /> : <div className="spinner-border container-fluid d-flex justify-content-center" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>}
                     </div>
 
                     <div className="flex-fill d-flex flex-column justify-content-between">
@@ -123,7 +125,6 @@ export default function Orders({ userData }) {
 
                       <div className="footer">
                         <h4 className="badge bg-success">DELIVERED</h4>
-                        {/* <h6 className="mb-0">On 06/03/2024</h6> */}
                       </div>
                     </div>
                   </div>

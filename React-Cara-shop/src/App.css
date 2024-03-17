@@ -109,22 +109,32 @@
   background-color: initial !important;
 }
 
-@media (max-width: 1000px) {
+/* .navbar-light .navbar-toggler-icon {
+  background-image: url('./Assets/bars-solid.svg') !important;
+} */
+
+@media (max-width: 1040px) {
   #navbar {
-    padding: 1rem 2rem;
+    padding: 1rem 2rem !important;
   }
 
   #navbar .nav-item {
-    padding: 0 0.7rem;
+    padding: 0 0.7rem !important;
   }
 
   #navbar .nav-link {
-    font-size: 0.9rem;
+    font-size: 0.9rem !important;
+  }
+}
+@media (max-width: 820px) {
+  #navbar .nav-link {
+    padding: 0 !important;
+    font-size: 0.8rem !important;
   }
 }
 @media (max-width: 679px) {
   #navbar {
-    padding: 1.3rem 1rem 0.5rem;
+    padding: 1.3rem 1rem 0.5rem !important;
   }
 }
 
@@ -134,8 +144,8 @@
 /* ============ LANDING ============ */
 
 #landing {
-  background-image: url('./Assets/img/hero4.png');
-  height: 90vh;
+  /* background-image: url('../public/assets/landing.WebP'); */
+  height: 45vh;
   background-position: top 25% right 0;
   background-size: cover;
   display: flex;
@@ -155,7 +165,7 @@
 }
 
 #landing button {
-  background-image: url('./Assets/img/button.png');
+  background-image: url('../public/assets/img/button.png');
   background-color: transparent;
   border: 0;
   color: #088178;
@@ -185,7 +195,7 @@
   text-align: center;
   max-width: 100%;
   height: 16em;
-  background: url('./Assets/img/about/banner.png') no-repeat;
+  background: url('../public/assets/img/about/banner.png') no-repeat;
   background-position: top;
   background-size: cover;
   overflow: hidden;
@@ -367,7 +377,7 @@
 /* ============ LANDING ============ */
 
 #landing {
-  background: url('./Assets/landing.WebP') no-repeat;
+  background: url('../public/assets/img/landing.WebP') no-repeat;
   height: 45vh;
   background-position: left;
   background-size: cover;
@@ -388,7 +398,7 @@
 }
 
 #landing button {
-  background-image: url('./Assets/img/button.png');
+  background-image: url('../public/assets/img/button.png');
   background-color: transparent;
   border: 0;
   color: #088178;
