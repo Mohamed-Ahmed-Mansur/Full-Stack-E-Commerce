@@ -29,42 +29,36 @@ function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
-
+    // e.preventDefault();
+    console.log("here")
     if (!formData.email.trim()) {
       setErrors({ ...errors, email: "Please enter your email." });
       return;
-    }
-    if (!formData.password.trim()) {
+    } else if (!formData.password.trim()) {
       setErrors({ ...errors, password: "Please enter your password." });
       return;
     }
-
-    try {
-      const {
-        data: { message },
-      } = await axios.post(
-        "https://backend-last-v.onrender.com/user/log",
-        { email: formData.email, password: formData.password },
-        { withCredentials: true }
-      );
-
-      if (message === "Logged-In Successfully") {
-        navigate("/");
-      } else if (message === "Invalid Email Or Password !!") {
-        toast.error(message);
-      } else if (message === "Please verify your account") {
-        setFlag(true);
-      } else if (
-        message ===
-        "Your application is still in review and once it's verified you will be notified over email"
-      ) {
-        setSellerFlag(true);
-      } else {
-        console.log(message);
-      }
-    } catch (error) {
-      console.error("Error:", error);
+    const {
+      data: { message },
+    } = await axios.post(
+      "https://backend-last-v.onrender.com/user/log",
+      { email: formData.email, password: formData.password },
+      { withCredentials: true }
+    );
+    console.log(message)
+    if (message === "Logged-In Successfully") {
+      navigate("/");
+    } else if (message === "Invalid Email Or Password !!") {
+      toast.error(message);
+    } else if (message === "Please verify your account") {
+      setFlag(true);
+    } else if (
+      message ===
+      "Your application is still in review and once it's verified you will be notified over email"
+    ) {
+      setSellerFlag(true);
+    } else {
+      console.log(message);
     }
   }, [formData, errors, navigate]);
 
@@ -94,8 +88,13 @@ function SignIn() {
             <MDBCardBody className="p-5 d-flex flex-column align-items-center">
               <div className="d-flex align-items-center mb-4">
                 <h2 style={{ color: "#088178" }} className="fw-bold mb-0 m-2">
-                  Welcome to <span style={{ color: "darkmagenta", fontSize: "3rem" }}>ForSa</span>
+                  Welcome to 
                 </h2>
+                <img
+                  className="w-90"
+                  src="../../Assets/img/logo.png"
+                  alt="logo"
+                />
               </div>
               <h2 className="fw-bold mb-2">Sign in now !</h2>
               <p className="text-white-50 mb-3">Please enter your login and password!</p>

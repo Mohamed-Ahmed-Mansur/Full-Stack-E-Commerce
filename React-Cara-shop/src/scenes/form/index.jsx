@@ -11,9 +11,7 @@ import { useNavigate } from "react-router-dom";
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const { enqueueSnackbar } = useSnackbar();
-  // const handleFormSubmit = (values) => {
-  //   console.log(values);
-  // };
+  
   const navigate=useNavigate()
 
   const handleFormSubmit = async (values,variant) => {
@@ -33,7 +31,6 @@ const Form = () => {
 
       const response = await axios.post("https://backend-last-v.onrender.com/user/reg", formData);
       
-      console.log(response.data); 
       enqueueSnackbar('admin added successfully',{ variant }); 
     navigate('/dashboard/faq')
     

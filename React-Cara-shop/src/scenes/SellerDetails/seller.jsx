@@ -12,7 +12,7 @@ import {
   Button,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -20,19 +20,24 @@ import ContactsIcon from "@mui/icons-material/Contacts";
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { useSnackbar } from 'notistack';
+import { jwtDecode } from "jwt-decode";
+import { SnackbarProvider, useSnackbar } from 'notistack';
+
 const Seller = () => {
   const location = useLocation();
   const [sellerData, setSellerData] = useState(null);
 const cookies = new Cookies();
 const JWT = cookies.get('x-auth-token');
+const decode=jwtDecode(JWT)
 const { enqueueSnackbar } = useSnackbar();
-
+// console.log(decode.user)
+const navigate=useNavigate()
 useEffect(() => {
   if (location.state && location.state.data) {
     setSellerData(location.state.data);
     console.log(location.state.data);
     console.log(location.state.data.userID);
+    // console.log(location.state.data.userID);
   }
 }, [location.state]);
 
@@ -59,6 +64,7 @@ const updateseller = async (userID,variant) => {
 
       console.log('User updated successfully:', response.data);
       enqueueSnackbar('This is a success message!', { variant });
+      navigate("/dashboard/invoices")
     } else {
       console.error('JWT token not found');
     }
@@ -114,16 +120,20 @@ const deleteseller = async (userID,variant)=>{
                 }}
               >
                 <Avatar
-                  src={sellerData.image}
+                  // src={sellerData.image}
                   alt="Seller Image"
                   sx={{ width: 100, height: 100 }}
                 />
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontWeight: "bold", marginTop: "5px" }}
-                >
-                  {sellerData.name}
-                </Typography>
+             
+  <Typography
+    variant="subtitle1"
+    sx={{ fontWeight: "bold", marginTop: "5px" }}
+  >
+    {sellerData.name} 
+  </Typography>
+
+
+
               </Box>
             </Box>
           </Grid>
@@ -164,13 +174,18 @@ const deleteseller = async (userID,variant)=>{
             
               </Table>
             </TableContainer>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end',  alignItems:"flex-end", marginTop:'4px'}}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end',  alignItems:"flex-end", marginTop:'9px'}}>
             <Button variant="contained" onClick={() => updateseller(sellerData.userID,'success')} startIcon={<DoneOutlineIcon/>}>Admit</Button>
 
-                <Button variant="contained" onClick={()=>deleteseller(sellerData.userID,'success')}  startIcon={<DeleteIcon />}>
-  Delete
-</Button>             </Box>
-          </Grid>
+                <Button variant="contained" onClick={()=>deleteseller(sellerData.userID,'success')}  startIcon={<DeleteIcon />}>Delete</Button>          
+   </Box>
+   <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', marginTop: '40px' }}>
+  {sellerData && sellerData.image && (
+    <img src={sellerData.image} style={{ width: '400px', height: '300px' }} alt="Seller Image" />
+  )}
+</Box>
+
+    </Grid>
         </Grid>
       )}
     </Container>

@@ -1,9 +1,10 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../Components/dashboard/Header";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const Invoices = () => {
   const theme = useTheme();
@@ -39,7 +40,6 @@ const Invoices = () => {
     getData();
   }, []);
 
-console.log("makesure",admit)
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -47,6 +47,15 @@ console.log("makesure",admit)
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
+      renderCell: (params) => (
+        <div>
+          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+          {params.row.admit && <span style={{ marginLeft: 5 }}><AdminPanelSettingsIcon></AdminPanelSettingsIcon></span>}
+            {params.value}
+
+          </Typography>
+        </div>
+      ),
     },
     {
       field: "phone",

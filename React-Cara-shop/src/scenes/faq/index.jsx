@@ -20,7 +20,6 @@ const FAQ = () => {
 
   const cookies = new Cookies(); 
     const JWT = cookies.get("x-auth-token");
-    console.log(JWT);
   
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const FAQ = () => {
         }
 
         const data = await response.json();
-        setMockDataContacts(data.slice(0, 8));
+        setMockDataContacts(data);
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -134,8 +133,8 @@ const FAQ = () => {
   return (
     <Box m="20px">
       <Header
-        title="persona"
-        subtitle="List of persona for Future Reference"
+        title="Menage Team"
+        subtitle="Managing the Team Members"
       />
       <Box
         m="40px 0 0 0"

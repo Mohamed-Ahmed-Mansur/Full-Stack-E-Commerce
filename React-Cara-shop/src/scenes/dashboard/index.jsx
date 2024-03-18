@@ -12,10 +12,36 @@ import GeographyChart from "../../Components/dashboard/GeographyChart";
 import BarChart from "../../Components/dashboard/BarChart";
 import StatBox from "../../Components/dashboard/StatBox";
 import ProgressCircle from "../../Components/dashboard/ProgressCircle";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [data, setdata] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await fetch("https://backend-last-v.onrender.com/orders");
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const data = await response.json();
+
+        const newData = data.map((row, index) => ({
+          ...row,
+          id: index + 1, 
+        }));
+        setdata(newData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    getData();
+  }, []);
+
 
   return (
     <><Box m="20px">
@@ -23,20 +49,7 @@ const Dashboard = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
+        
       </Box>
 
       {/* GRID & CHARTS */}
@@ -166,38 +179,40 @@ const Dashboard = () => {
               Recent Transactions
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          {data.map((item,index) => (
+                     
+ 
             <Box
-              key={`${transaction.txId}-${i}`}
+              key={index}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
               borderBottom={`4px solid ${colors.primary[500]}`}
               p="15px"
             >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+             <Box>
+  <Typography
+    color={colors.greenAccent[500]}
+    variant="h5"
+    fontWeight="600"
+  >
+ orderID:   {item.
+orderID
+}
+  </Typography>
+</Box>
+
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
                 borderRadius="4px"
               >
-                ${transaction.cost}
+                ${item.totalPrice}
               </Box>
             </Box>
           ))}
         </Box>
+        
 
         {/* ROW 3 */}
         <Box

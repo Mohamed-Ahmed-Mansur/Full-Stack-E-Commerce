@@ -5,23 +5,16 @@ import Header from "../../Components/dashboard/Header";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import * as React from 'react';
+import { Link } from "react-router-dom";
 
 const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [mockDataContacts, setMockDataContacts] = useState([]);
-  // const { enqueueSnackbar } = useSnackbar();
 
 
   const columns = [
-    // { field: "id", headerName: "ID", flex: 0.5 },
-    // { field: "registrarId", headerName: "Registrar ID" },
-    // {
-    //   field: "na",
-    //   headerName: "Name",
-    //   flex: 1,
-    //   cellClassName: "name-column--cell",
-    // },
+ 
     {
       field: "orderID",
       headerName: "Order ID",
@@ -58,16 +51,20 @@ const Contacts = () => {
       headerName: "Categories",
       flex: 1,
     },
-    // {
-    //   field: "city",
-    //   headerName: "City",
-    //   flex: 1,
-    // },
-    // {
-    //   field: "zipCode",
-    //   headerName: "Zip Code",
-    //   flex: 1,
-    // },
+    {
+      field: "",
+      headerName: "",
+      flex: 1,
+      renderCell: (params) => (
+        <Link
+          className="text-decoration-none"
+          to= "/dashboard/Detailsorder"
+            state={{data:params.row}}
+        
+        >
+          Show Details
+        </Link> 
+    )}
   ];
 
   useEffect(() => {

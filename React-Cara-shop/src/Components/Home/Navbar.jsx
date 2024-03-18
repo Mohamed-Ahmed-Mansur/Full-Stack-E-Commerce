@@ -85,7 +85,7 @@ export default memo(function Navbar() {
     >
       <div className="container-fluid d-flex">
         <NavLink className="navbar-brand m-0" to="/">
-          <span style={{ fontSize: "1.7rem", fontWeight: "800", color: '#088178' }}>{t('ForSa')}</span>
+          <img src="../../Assets/img/logo.png" alt="logo" />
         </NavLink>
 
         {/* <div className="navCont d-flex align-items-center flex-fill justify-content-end justify-content-sm-end "> */}

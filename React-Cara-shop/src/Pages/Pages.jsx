@@ -6,6 +6,11 @@ import { ColorModeContext, useMode } from '../theme';
 import store from '../Redux/store';
 import styled from 'styled-components';
 import Success from './success';
+import Index from '../scenes/sellerForm';
+import SellerTable from '../scenes/sellerTable/Sellertable';
+import Updateseller from '../scenes/updateselldetails.jsx/updateseller';
+import Comments from '../scenes/comments/comments';
+import Detailsorder from '../scenes/detailsorder/detailsorder';
 
 const Home = React.lazy(() => import('./Home'));
 const Shop = React.lazy(() => import('./Shop'));
@@ -33,7 +38,7 @@ const Bar = React.lazy(() => import('../scenes/bar'));
 const Pie = React.lazy(() => import('../scenes/pie'));
 const Line = React.lazy(() => import('../scenes/line'));
 const FAQ = React.lazy(() => import('../scenes/faq'));
-const Calendar = React.lazy(() => import('../scenes/calendar/calendar'));
+// const Calendar = React.lazy(() => import('../scenes/calendar/calendar'));
 const Geography = React.lazy(() => import('../scenes/geography'));
 const Sidebar = React.lazy(() => import('../scenes/global/Sidebar'));
 const Seller = React.lazy(() => import('../scenes/SellerDetails/seller'));
@@ -82,22 +87,26 @@ const Pages = () => {
               path="/dashboard/*"
               element={
                 <LayoutWrapper>
-                  <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="team" element={<Team />} />
-                    <Route path="contacts" element={<Contacts />} />
-                    <Route path="invoices" element={<Invoices />} />
-                    <Route path="form" element={<Form />} />
-                    <Route path="bar" element={<Bar />} />
-                    <Route path="pie" element={<Pie />} />
-                    <Route path="line" element={<Line />} />
-                    <Route path="faq" element={<FAQ />} />
-                    <Route path="Seller" element={<Seller />} />
-                
-                    <Route path="calendar" element={<Calendar />} />
-                    <Route path="geography" element={<Geography />} />
-                  </Routes>
-                </LayoutWrapper>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="team" element={<Team />} />
+                  <Route path="contacts" element={<Contacts />} />
+                  <Route path="invoices" element={<Invoices />} />
+                  <Route path="form" element={<Form />} />
+                  <Route path="bar" element={<Bar />} />
+                  <Route path="pie" element={<Pie />} />
+                  <Route path="line" element={<Line />} />
+                  <Route path="faq" element={<FAQ />} />
+                  <Route path="Seller" element={<Seller />} />
+                  {/* <Route path="calendar" element={<Calendar />} /> */}
+                  <Route path="geography" element={<Geography />} />
+                  <Route path="sellerform" element={<Index />} />
+                  <Route path="sellerTable" element={<SellerTable />} />
+                  <Route path="Updateseller" element={<Updateseller />} />
+                  <Route path="Comments" element={<Comments />} />
+                  <Route path="Detailsorder" element={<Detailsorder />} />
+                </Routes>
+              </LayoutWrapper>
               }
             />
             {/* Other routes without the layout wrapper */}

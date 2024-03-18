@@ -98,7 +98,7 @@ const Footer = () => {
           <div className="col-md-3 ">
             <FooterLogo
               className="logo"
-              src="../assets/img/logo.png"
+              src="../../Assets/img/logo.png"
               alt="Logo"
             />
             {/* <FooterLogo className="logo" src="assets/img/logo.png" alt="Logo" /> */}

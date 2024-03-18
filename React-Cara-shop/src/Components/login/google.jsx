@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { jwtDecode } from 'jwt-decode';
 import axios from "axios";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 // Styled components for improved design
 const FormContainer = styled.div`
@@ -44,6 +45,7 @@ const Google = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userData, setUserData] = useState("");
+  const navigate = useNavigate();
 
   const handleLoginSuccess = (credentialresponse) => {
     setUserData(jwtDecode(credentialresponse.credential));
@@ -51,7 +53,6 @@ const Google = () => {
   }
 
   const handleFormSubmit = () => {
-
     if (!phoneNumber || !address || !password || !confirmPassword) {
       toast.error("Please fill in all fields");
       return;
@@ -62,13 +63,12 @@ const Google = () => {
       return;
     }
 
-    console.log(phoneNumber)
     axios.post("https://backend-last-v.onrender.com/user/reg", {
       sellerProducts: [],
       phone: phoneNumber,
-      name: userData.name,
+      name: userData ? userData.name : "", // Check if userData is not empty
       address: address,
-      email: userData.email,
+      email: userData ? userData.email : "", // Check if userData is not empty
       password: password,
       isAdmin: true,
       isSeller: false,
@@ -79,9 +79,9 @@ const Google = () => {
       checkout: [],
       cart: [],
       image: " ",
-    }).then(response => {
+    }).then(async (response) => {
       // Handle response
-      console.log("Registration successful", response);
+      toast.success("You are now one of our members, Please use your google account to login");
       setShowAlert(false);
     }).catch(error => {
       // Handle error
