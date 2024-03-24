@@ -14,7 +14,7 @@ export default memo(function Featured() {
   useEffect(() => {
     async function getData() {
       try {
-        const ordersResponse = await fetch("https://backend-last-v.onrender.com/orders");
+        const ordersResponse = await fetch("http://localhost:3001/orders");
         const ordersData = await ordersResponse.json();
         ordersData.reverse();
   
@@ -23,7 +23,7 @@ export default memo(function Featured() {
         uniqueProductIDs = [...uniqueProductIDs];
   
         const productRequests = uniqueProductIDs.map(async (productId) => {
-          const productResponse = await fetch(`https://backend-last-v.onrender.com/products/${productId}`);
+          const productResponse = await fetch(`http://localhost:3001/products/${productId}`);
           return productResponse.json();
         });
   

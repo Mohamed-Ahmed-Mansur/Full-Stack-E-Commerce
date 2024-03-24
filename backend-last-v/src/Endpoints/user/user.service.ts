@@ -290,7 +290,7 @@ export class UserService {
     let updateUser = await this.userModel.updateOne(
       { email },
       {
-        $set: { image: 'http://localhost:3001/' + newFilePath },
+        $set: { image: 'https://backend-last-v.onrender.com/' + newFilePath },
       },
     );
 

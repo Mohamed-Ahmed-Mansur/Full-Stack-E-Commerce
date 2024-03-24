@@ -1,5 +1,7 @@
 import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+// import i18n from '../../i18n';
 
 const StyledBanner = styled.div`
   background-image: url('assets/img/banner/b1.WebP');
@@ -19,11 +21,13 @@ const StyledBanner = styled.div`
 `;
 
 const ImageBanner3 = () => {
+  const [t] = useTranslation();
+
   return (
     <StyledBanner className="container-fluid d-flex align-items-center justify-content-center">
       <div className="row">
         <div className="col">
-          <h3>Sales Up to 70%</h3>
+          <h3>{t('Sales Up to 70%')}</h3>
         </div>
       </div>
     </StyledBanner>

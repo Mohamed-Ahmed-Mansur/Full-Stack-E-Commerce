@@ -5,7 +5,7 @@
 // async function bootstrap() {
 //   const app = await NestFactory.create(AppModule);
 //   app.enableCors({
-//     origin: 'http://localhost:3000',
+//     origin: 'https://65fb0034291f01008418cf5b--forsa-e-commerce.netlify.app',
 //     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 //     credentials: true,
 //   });
@@ -22,7 +22,7 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const corsOptions: CorsOptions = {
-    origin: 'http://localhost:3000', // Allow requests from this origin
+    origin: ['http://localhost:3000', 'https://frolicking-caramel-5c5b6d.netlify.app'], // Allow requests from this origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   };

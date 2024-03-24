@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled, { css, keyframes } from 'styled-components';
 
 const countUp = (start, end, duration, setValue) => {
@@ -71,6 +72,7 @@ const Statistics = () => {
   const [value1, setValue1] = useState(0);
   const [value2, setValue2] = useState(0);
   const [value3, setValue3] = useState(0);
+  const [t] = useTranslation();
 
   useEffect(() => {
     countUp(0, 2000, 5000, setValue1);
@@ -83,13 +85,13 @@ const Statistics = () => {
     <div ref={containerRef}>
       <Container style={{ margin: "2rem 0" }}>
         <SubContainer>
-          <AnimatedNumber isVisible={value1 > 0}>+{value1}&nbsp;<b>Orders</b></AnimatedNumber>
+          <AnimatedNumber isVisible={value1 > 0}>+{value1}&nbsp;<b>{t('Orders')}</b></AnimatedNumber>
         </SubContainer>
         <SubContainer>
-          <AnimatedNumber isVisible={value2 > 0}>+{value2}&nbsp;<b>Customers</b></AnimatedNumber>
+          <AnimatedNumber isVisible={value2 > 0}>+{value2}&nbsp;<b>{t('Customers')}</b></AnimatedNumber>
         </SubContainer>
         <SubContainer>
-          <AnimatedNumber isVisible={value3 > 0}>+{value3}&nbsp;<b>Sellers</b></AnimatedNumber>
+          <AnimatedNumber isVisible={value3 > 0}>+{value3}&nbsp;<b>{t('Sellers')}</b></AnimatedNumber>
         </SubContainer>
       </Container>
     </div>

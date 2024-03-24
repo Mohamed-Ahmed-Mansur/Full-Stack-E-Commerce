@@ -64,8 +64,8 @@ export class CheckOutController {
             quantity: item.quantity,
           };
         }),
-        success_url: 'http://localhost:3000/success', // Redirect URL after successful payment
-        cancel_url: 'http://localhost:3000/cart', // Redirect URL if the payment is canceled
+        success_url: 'https://frolicking-caramel-5c5b6d.netlify.app/success', // Redirect URL after successful payment
+        cancel_url: 'https://frolicking-caramel-5c5b6d.netlify.app/cart', // Redirect URL if the payment is canceled
       });
       // Respond with the session ID to the frontend
       return res.status(HttpStatus.OK).json({ sessionId: session.id });

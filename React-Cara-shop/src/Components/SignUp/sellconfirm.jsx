@@ -6,7 +6,7 @@ const Sellconfirm = () => {
         const windowFeatures = "left=500,top=100,width=420,height=320";
         const handle = window.open(
             
-          `http://localhost:3000/Message`,
+          `https://65fb0034291f01008418cf5b--forsa-e-commerce.netlify.app/Message`,
           "popupWindow",
           windowFeatures,
         );
